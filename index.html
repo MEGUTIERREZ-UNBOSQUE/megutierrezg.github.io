@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elias Gutiérrez | E-portafolio</title>
+
+  <!-- Hoja de estilos -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== ENCABEZADO / NAVEGACIÓN ===================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <span class="logo">Elias Gutiérrez</span>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="#presentacion">Presentación</a></li>
+          <li><a href="#evidencias">Evidencias</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===================== SECCIÓN: PRESENTACIÓN ===================== -->
+  <section id="presentacion" class="section presentacion">
+    <div class="container presentacion-grid">
+
+      <!-- Foto o avatar -->
+      <div class="avatar-wrap">
+        <img src="video/avatar.jpg" alt="Foto de Elias Gutiérrez" class="avatar" id="avatarImg">
+      </div>
+
+      <!-- Texto de presentación -->
+      <div class="presentacion-texto">
+        <h1>Hola, soy Elias</h1>
+        <p class="subtitulo">Estudiante de Ingeniería de Sistemas — Universidad El Bosque</p>
+        <p>
+          Bienvenido a mi e-portafolio. Este espacio lo voy a usar durante el semestre
+          para publicar las evidencias del curso de <strong>Bases de Datos 1</strong>:
+          modelado, normalización, consultas SQL y el proyecto final.
+        </p>
+      </div>
+    </div>
+
+    <!-- Video de presentación -->
+    <div class="container video-wrap">
+      <h2>Video de presentación</h2>
+      <div class="video-responsive">
+        <!--
+          Opción A: video embebido local.
+          Coloca tu archivo de video dentro de la carpeta "video/" con el nombre "presentacion.mp4"
+          y este reproductor lo mostrará automáticamente.
+        -->
+        <video controls poster="video/avatar.jpg">
+          <source src="video/presentacion.mp4" type="video/mp4">
+          Tu navegador no soporta la reproducción de video.
+        </video>
+
+        <!--
+          Opción B: si prefieres subir el video a YouTube y solo enlazarlo,
+          borra la etiqueta <video> de arriba y descomenta el iframe de abajo,
+          reemplazando TU_ID_DE_VIDEO por el id del video de YouTube.
+
+          <iframe
+            src="https://www.youtube.com/embed/TU_ID_DE_VIDEO"
+            title="Video de presentación"
+            allowfullscreen>
+          </iframe>
+        -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SECCIÓN: EVIDENCIAS (bonus) ===================== -->
+  <section id="evidencias" class="section evidencias">
+    <div class="container">
+      <h2>Evidencias del curso</h2>
+      <p class="evidencias-intro">
+        Aquí iré publicando las evidencias de cada etapa del curso a medida que avance el semestre.
+      </p>
+
+      <div class="evidencias-grid">
+        <div class="evidencia-card">
+          <h3>Modelado</h3>
+          <p>Próximamente.</p>
+        </div>
+        <div class="evidencia-card">
+          <h3>Normalización</h3>
+          <p>Próximamente.</p>
+        </div>
+        <div class="evidencia-card">
+          <h3>SQL</h3>
+          <p>Próximamente.</p>
+        </div>
+        <div class="evidencia-card">
+          <h3>Proyecto</h3>
+          <p>Próximamente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PIE DE PÁGINA ===================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="anio"></span> Elias Gutiérrez — Ingeniería de Sistemas, Universidad El Bosque</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
