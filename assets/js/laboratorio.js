@@ -1,6 +1,7 @@
 // Laboratorio SQL: PostgreSQL (PGlite, WebAssembly) corriendo en el navegador
 // con el esquema y los datos reales del proyecto final.
-const PGLITE = "https://cdn.jsdelivr.net/npm/@electric-sql/pglite@0.5.17/dist";
+// PGlite va dentro del repositorio para no depender de un CDN externo.
+const PGLITE = new URL("../vendor/pglite", import.meta.url).href;
 const MAX_FILAS = 500;
 
 const $ = (sel, raiz = document) => raiz.querySelector(sel);
@@ -73,7 +74,7 @@ async function iniciar() {
     btnEncender.disabled = true;
     cargando = (async () => {
       try {
-        ponerEstado("cargando", "Descargando PostgreSQL (unos 5 MB, solo la primera vez)…");
+        ponerEstado("cargando", "Descargando PostgreSQL (solo la primera vez)…");
         const [{ PGlite }, { btree_gist }] = await Promise.all([
           import(`${PGLITE}/index.js`),
           import(`${PGLITE}/contrib/btree_gist.js`),

@@ -1,0 +1,1 @@
+PGlite 0.5.17 (@electric-sql/pglite), Apache-2.0. Copiado de dist/ sin mapas ni tipos.

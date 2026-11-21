@@ -16,7 +16,7 @@ Evidencias de la materia organizadas en cuatro partes:
 
 ## Cómo está hecho
 
-HTML, CSS y JavaScript sin dependencias ni paso de compilación, para que GitHub Pages lo publique tal cual. El laboratorio SQL carga [PGlite](https://pglite.dev) (PostgreSQL compilado a WebAssembly) desde jsDelivr solo cuando se usa, y ejecuta los scripts `assets/sql/01_ddl_tablas.sql` y `02_seed_datos_realistas.sql` del proyecto final.
+HTML, CSS y JavaScript sin dependencias ni paso de compilación, para que GitHub Pages lo publique tal cual. El laboratorio SQL carga [PGlite](https://pglite.dev) 0.5.17 (PostgreSQL compilado a WebAssembly, licencia Apache-2.0) desde `assets/vendor/pglite/` solo cuando se usa, y ejecuta los scripts `assets/sql/01_ddl_tablas.sql` y `02_seed_datos_realistas.sql` del proyecto final.
 
 Los diagramas de `assets/img/diagramas/` se exportaron como imagen desde los archivos de draw.io que están en `documentos/originales/`.
 
