@@ -1,0 +1,359 @@
+[
+ {
+  "n": 1,
+  "titulo": "Nombre de todas las cuentas de la empresa 1",
+  "algebra": "π nombre (σ id_empresa=1 (PC))",
+  "esperadas": 89,
+  "sql": "SELECT DISTINCT nombre FROM plan_cuenta WHERE id_empresa = 1;"
+ },
+ {
+  "n": 2,
+  "titulo": "Código y nombre de las cuentas que aceptan movimiento",
+  "algebra": "π codigo, nombre (σ acepta_movimiento=TRUE (PC))",
+  "esperadas": 52,
+  "sql": "SELECT DISTINCT codigo, nombre FROM plan_cuenta WHERE acepta_movimiento = TRUE;"
+ },
+ {
+  "n": 3,
+  "titulo": "Cuentas de nivel 1",
+  "algebra": "σ nivel=1 (PC)",
+  "esperadas": 20,
+  "sql": "SELECT * FROM plan_cuenta WHERE nivel = 1;"
+ },
+ {
+  "n": 4,
+  "titulo": "Tipos de cuenta de naturaleza deudora",
+  "algebra": "π id_tipo_cuenta (σ naturaleza='DEBITO' (TC))",
+  "esperadas": 3,
+  "sql": "SELECT DISTINCT id_tipo_cuenta FROM tipo_cuenta WHERE naturaleza = 'DEBITO';"
+ },
+ {
+  "n": 5,
+  "titulo": "Periodos abiertos de la empresa 1",
+  "algebra": "σ id_empresa=1 ∧ estado='ABIERTO' (PER)",
+  "esperadas": 1,
+  "sql": "SELECT * FROM periodo_contable WHERE id_empresa = 1 AND estado = 'ABIERTO';"
+ },
+ {
+  "n": 6,
+  "titulo": "Cuentas raíz (sin cuenta padre)",
+  "algebra": "σ id_cuenta_padre IS NULL (PC)",
+  "esperadas": 20,
+  "sql": "SELECT * FROM plan_cuenta WHERE id_cuenta_padre IS NULL;"
+ },
+ {
+  "n": 7,
+  "titulo": "Cuentas de la empresa 2 con nivel mayor que 2",
+  "algebra": "σ id_empresa=2 ∧ nivel>2 (PC)",
+  "esperadas": 0,
+  "sql": "SELECT * FROM plan_cuenta WHERE id_empresa = 2 AND nivel > 2;"
+ },
+ {
+  "n": 8,
+  "titulo": "Cuentas cuyo código empieza por 1",
+  "algebra": "σ codigo LIKE '1%' (PC)",
+  "esperadas": 33,
+  "sql": "SELECT * FROM plan_cuenta WHERE codigo LIKE '1%';"
+ },
+ {
+  "n": 9,
+  "titulo": "Movimientos débito (debe mayor que cero)",
+  "algebra": "σ debe>0 (MOV)",
+  "esperadas": 77,
+  "sql": "SELECT * FROM movimiento WHERE debe > 0;"
+ },
+ {
+  "n": 10,
+  "titulo": "Movimientos con haber 0 y debe mayor que 1.000",
+  "algebra": "σ haber=0 ∧ debe>1000 (MOV)",
+  "esperadas": 77,
+  "sql": "SELECT * FROM movimiento WHERE haber = 0 AND debe > 1000;"
+ },
+ {
+  "n": 11,
+  "titulo": "Asientos del periodo 3 de la empresa 1",
+  "algebra": "π id_asiento, numero, fecha (σ AS.id_periodo=3 ∧ id_empresa=1 (AS ⋈ AS.id_periodo=PER.id_periodo PER))",
+  "esperadas": 12,
+  "sql": "SELECT DISTINCT a.id_asiento, a.numero, a.fecha FROM asiento a JOIN periodo_contable p ON a.id_periodo = p.id_periodo WHERE a.id_periodo = 3 AND p.id_empresa = 1;"
+ },
+ {
+  "n": 12,
+  "titulo": "Periodos que inician en 2026",
+  "algebra": "σ fecha_inicio ≥ '2026-01-01' ∧ fecha_inicio ≤ '2026-12-31' (PER)",
+  "esperadas": 5,
+  "sql": "SELECT * FROM periodo_contable WHERE fecha_inicio BETWEEN DATE '2026-01-01' AND DATE '2026-12-31';"
+ },
+ {
+  "n": 13,
+  "titulo": "Tipos de cuenta de clase ACTIVO",
+  "algebra": "σ clase='ACTIVO' (TC)",
+  "esperadas": 2,
+  "sql": "SELECT * FROM tipo_cuenta WHERE clase = 'ACTIVO';"
+ },
+ {
+  "n": 14,
+  "titulo": "Renombrar PC como CUENTA y listar sus nombres",
+  "algebra": "π nombre (ρ CUENTA (PC))",
+  "esperadas": 107,
+  "sql": "SELECT DISTINCT cuenta.nombre FROM plan_cuenta AS cuenta;"
+ },
+ {
+  "n": 15,
+  "titulo": "Movimientos cuyo asiento pertenece al periodo 5",
+  "algebra": "π id_movimiento (MOV ⋈ σ id_periodo=5 (AS))",
+  "esperadas": 7,
+  "sql": "SELECT DISTINCT m.id_movimiento FROM movimiento m JOIN asiento a ON m.id_asiento = a.id_asiento WHERE a.id_periodo = 5;"
+ },
+ {
+  "n": 16,
+  "titulo": "Cuentas con su tipo",
+  "algebra": "PC ⋈ TC",
+  "esperadas": 113,
+  "sql": "SELECT * FROM plan_cuenta pc JOIN tipo_cuenta tc USING (id_tipo_cuenta);"
+ },
+ {
+  "n": 17,
+  "titulo": "Cuentas con su rubro",
+  "algebra": "PC ⋈ PC.id_rubro=RE.id_rubro RE",
+  "esperadas": 113,
+  "sql": "SELECT * FROM plan_cuenta pc JOIN rubro_estado re ON pc.id_rubro = re.id_rubro;"
+ },
+ {
+  "n": 18,
+  "titulo": "Cuentas de la empresa 1 con clase y naturaleza",
+  "algebra": "π codigo, nombre, clase, naturaleza (σ id_empresa=1 (PC ⋈ TC))",
+  "esperadas": 90,
+  "sql": "SELECT DISTINCT pc.codigo, pc.nombre, tc.clase, tc.naturaleza FROM plan_cuenta pc JOIN tipo_cuenta tc USING (id_tipo_cuenta) WHERE pc.id_empresa = 1;"
+ },
+ {
+  "n": 19,
+  "titulo": "Cuentas sin movimientos",
+  "algebra": "π id_cuenta (PC) − π id_cuenta (MOV)",
+  "esperadas": 63,
+  "sql": "SELECT id_cuenta FROM plan_cuenta EXCEPT SELECT id_cuenta FROM movimiento;"
+ },
+ {
+  "n": 20,
+  "titulo": "Cuentas con al menos un movimiento",
+  "algebra": "π id_cuenta (MOV)",
+  "esperadas": 50,
+  "sql": "SELECT DISTINCT id_cuenta FROM movimiento;"
+ },
+ {
+  "n": 21,
+  "titulo": "Asientos con su periodo y empresa",
+  "algebra": "AS ⋈ AS.id_periodo=PER.id_periodo PER",
+  "esperadas": 31,
+  "sql": "SELECT * FROM asiento a JOIN periodo_contable p ON a.id_periodo = p.id_periodo;"
+ },
+ {
+  "n": 22,
+  "titulo": "Movimientos con datos de cuenta y asiento",
+  "algebra": "MOV ⋈ PC ⋈ AS",
+  "esperadas": 152,
+  "sql": "SELECT * FROM movimiento m JOIN plan_cuenta pc ON m.id_cuenta = pc.id_cuenta JOIN asiento a ON m.id_asiento = a.id_asiento;"
+ },
+ {
+  "n": 23,
+  "titulo": "Periodos cerrados o que inician en 2025",
+  "algebra": "σ estado='CERRADO' (PER) ∪ σ fecha_inicio ≥ '2025-01-01' ∧ fecha_inicio ≤ '2025-12-31' (PER)",
+  "esperadas": 6,
+  "sql": "SELECT * FROM periodo_contable WHERE estado = 'CERRADO' UNION SELECT * FROM periodo_contable WHERE fecha_inicio BETWEEN DATE '2025-01-01' AND DATE '2025-12-31';"
+ },
+ {
+  "n": 24,
+  "titulo": "Cuentas de clase ACTIVO o PASIVO",
+  "algebra": "π id_cuenta (PC ⋈ σ clase='ACTIVO' (TC)) ∪ π id_cuenta (PC ⋈ σ clase='PASIVO' (TC))",
+  "esperadas": 49,
+  "sql": "SELECT pc.id_cuenta FROM plan_cuenta pc JOIN tipo_cuenta tc USING (id_tipo_cuenta) WHERE tc.clase = 'ACTIVO' UNION SELECT pc.id_cuenta FROM plan_cuenta pc JOIN tipo_cuenta tc USING (id_tipo_cuenta) WHERE tc.clase = 'PASIVO';"
+ },
+ {
+  "n": 25,
+  "titulo": "Cuentas de clase ACTIVO que aceptan movimiento",
+  "algebra": "π id_cuenta (PC ⋈ σ clase='ACTIVO' (TC)) ∩ π id_cuenta (σ acepta_movimiento=TRUE (PC))",
+  "esperadas": 17,
+  "sql": "SELECT pc.id_cuenta FROM plan_cuenta pc JOIN tipo_cuenta tc USING (id_tipo_cuenta) WHERE tc.clase = 'ACTIVO' INTERSECT SELECT id_cuenta FROM plan_cuenta WHERE acepta_movimiento = TRUE;"
+ },
+ {
+  "n": 26,
+  "titulo": "Hijas de la cuenta 10",
+  "algebra": "σ id_cuenta_padre=10 (PC)",
+  "esperadas": 1,
+  "sql": "SELECT * FROM plan_cuenta WHERE id_cuenta_padre = 10;"
+ },
+ {
+  "n": 27,
+  "titulo": "Cuentas que son padre de otra",
+  "algebra": "π id_cuenta (PC) ∩ ρ X(id_cuenta) (π id_cuenta_padre (PC))",
+  "esperadas": 61,
+  "sql": "SELECT id_cuenta FROM plan_cuenta INTERSECT SELECT id_cuenta_padre AS id_cuenta FROM plan_cuenta;"
+ },
+ {
+  "n": 28,
+  "titulo": "Cuentas sin hijas",
+  "algebra": "π id_cuenta (PC) − ρ X(id_cuenta) (π id_cuenta_padre (σ id_cuenta_padre IS NOT NULL (PC)))",
+  "esperadas": 52,
+  "sql": "SELECT id_cuenta FROM plan_cuenta EXCEPT SELECT id_cuenta_padre AS id_cuenta FROM plan_cuenta WHERE id_cuenta_padre IS NOT NULL;"
+ },
+ {
+  "n": 29,
+  "titulo": "Movimientos de cuentas de clase INGRESO",
+  "algebra": "MOV ⋈ PC ⋈ σ clase='INGRESO' (TC)",
+  "esperadas": 21,
+  "sql": "SELECT m.* FROM movimiento m JOIN plan_cuenta pc ON m.id_cuenta = pc.id_cuenta JOIN tipo_cuenta tc ON pc.id_tipo_cuenta = tc.id_tipo_cuenta WHERE tc.clase = 'INGRESO';"
+ },
+ {
+  "n": 30,
+  "titulo": "Cuentas de la empresa 1 que aceptan movimiento",
+  "algebra": "π id_cuenta (σ id_empresa=1 (PC)) ∩ π id_cuenta (σ acepta_movimiento=TRUE (PC))",
+  "esperadas": 35,
+  "sql": "SELECT id_cuenta FROM plan_cuenta WHERE id_empresa = 1 INTERSECT SELECT id_cuenta FROM plan_cuenta WHERE acepta_movimiento = TRUE;"
+ },
+ {
+  "n": 31,
+  "titulo": "Periodos sin asientos",
+  "algebra": "π id_periodo (PER) − π id_periodo (AS)",
+  "esperadas": 3,
+  "sql": "SELECT id_periodo FROM periodo_contable EXCEPT SELECT id_periodo FROM asiento;"
+ },
+ {
+  "n": 32,
+  "titulo": "Cuentas acreedoras que aceptan movimiento, de la empresa 1",
+  "algebra": "π codigo, nombre (σ id_empresa=1 ∧ acepta_movimiento=TRUE (PC ⋈ σ naturaleza='CREDITO' (TC)))",
+  "esperadas": 12,
+  "sql": "SELECT DISTINCT pc.codigo, pc.nombre FROM plan_cuenta pc JOIN tipo_cuenta tc USING (id_tipo_cuenta) WHERE tc.naturaleza = 'CREDITO' AND pc.id_empresa = 1 AND pc.acepta_movimiento = TRUE;"
+ },
+ {
+  "n": 33,
+  "titulo": "Movimientos de cuentas de nivel 1",
+  "algebra": "MOV ⋈ σ nivel=1 (PC)",
+  "esperadas": 9,
+  "sql": "SELECT m.* FROM movimiento m JOIN plan_cuenta pc ON m.id_cuenta = pc.id_cuenta WHERE pc.nivel = 1;"
+ },
+ {
+  "n": 34,
+  "titulo": "Cuentas de la empresa 1 del rubro de efectivo",
+  "algebra": "π PC.id_cuenta, PC.codigo, PC.nombre (σ PC.id_empresa=1 (PC ⋈ PC.id_rubro=RE.id_rubro σ RE.nombre='Efectivo y Equivalentes de Efectivo' (RE)))",
+  "esperadas": 10,
+  "sql": "SELECT DISTINCT pc.id_cuenta, pc.codigo, pc.nombre FROM plan_cuenta pc JOIN rubro_estado re ON pc.id_rubro = re.id_rubro WHERE re.nombre = 'Efectivo y Equivalentes de Efectivo' AND pc.id_empresa = 1;"
+ },
+ {
+  "n": 35,
+  "titulo": "Asientos con al menos un movimiento de una cuenta de clase PASIVO",
+  "algebra": "π id_asiento (MOV ⋈ PC ⋈ σ clase='PASIVO' (TC))",
+  "esperadas": 8,
+  "sql": "SELECT DISTINCT m.id_asiento FROM movimiento m JOIN plan_cuenta pc ON m.id_cuenta = pc.id_cuenta JOIN tipo_cuenta tc ON pc.id_tipo_cuenta = tc.id_tipo_cuenta WHERE tc.clase = 'PASIVO';"
+ },
+ {
+  "n": 36,
+  "titulo": "Total del debe por cuenta",
+  "algebra": "γ id_cuenta; SUM(debe) → total_debe (MOV)",
+  "esperadas": 50,
+  "sql": "SELECT id_cuenta, SUM(debe) AS total_debe FROM movimiento GROUP BY id_cuenta;"
+ },
+ {
+  "n": 37,
+  "titulo": "Saldo por cuenta (debe menos haber)",
+  "algebra": "γ id_cuenta; SUM(debe) − SUM(haber) → saldo (MOV)",
+  "esperadas": 50,
+  "sql": "SELECT id_cuenta, SUM(debe) - SUM(haber) AS saldo FROM movimiento GROUP BY id_cuenta;"
+ },
+ {
+  "n": 38,
+  "titulo": "Número de movimientos por asiento",
+  "algebra": "γ id_asiento; COUNT(id_movimiento) → n (MOV)",
+  "esperadas": 31,
+  "sql": "SELECT id_asiento, COUNT(id_movimiento) AS n FROM movimiento GROUP BY id_asiento;"
+ },
+ {
+  "n": 39,
+  "titulo": "Cuentas con más de 10 movimientos",
+  "algebra": "σ n>10 (γ id_cuenta; COUNT(id_movimiento) → n (MOV))",
+  "esperadas": 1,
+  "sql": "SELECT id_cuenta, COUNT(id_movimiento) AS n FROM movimiento GROUP BY id_cuenta HAVING COUNT(id_movimiento) > 10;"
+ },
+ {
+  "n": 40,
+  "titulo": "Saldo por clase de cuenta",
+  "algebra": "γ clase; SUM(debe) − SUM(haber) → saldo (MOV ⋈ PC ⋈ TC)",
+  "esperadas": 6,
+  "sql": "SELECT tc.clase, SUM(m.debe) - SUM(m.haber) AS saldo FROM movimiento m JOIN plan_cuenta pc ON m.id_cuenta = pc.id_cuenta JOIN tipo_cuenta tc ON pc.id_tipo_cuenta = tc.id_tipo_cuenta GROUP BY tc.clase;"
+ },
+ {
+  "n": 41,
+  "titulo": "Asientos cuyo debe total no coincide con el haber total",
+  "algebra": "σ debe_total ≠ haber_total (γ id_asiento; SUM(debe) → debe_total, SUM(haber) → haber_total (MOV))",
+  "esperadas": 0,
+  "sql": "SELECT id_asiento, SUM(debe) AS debe_total, SUM(haber) AS haber_total FROM movimiento GROUP BY id_asiento HAVING SUM(debe) <> SUM(haber);"
+ },
+ {
+  "n": 42,
+  "titulo": "Periodos con movimientos en todas las cuentas de clase ACTIVO",
+  "algebra": "π id_periodo, id_cuenta (MOV ⋈ AS) ÷ π id_cuenta (PC ⋈ σ clase='ACTIVO' (TC))",
+  "esperadas": 0,
+  "sql": "SELECT p.id_periodo FROM periodo_contable p WHERE NOT EXISTS (SELECT pc.id_cuenta FROM plan_cuenta pc JOIN tipo_cuenta tc USING (id_tipo_cuenta) WHERE tc.clase = 'ACTIVO' EXCEPT SELECT m.id_cuenta FROM movimiento m JOIN asiento a ON m.id_asiento = a.id_asiento WHERE a.id_periodo = p.id_periodo);"
+ },
+ {
+  "n": 43,
+  "titulo": "Empresas con cuentas de todos los tipos de cuenta",
+  "algebra": "π id_empresa, id_tipo_cuenta (PC) ÷ π id_tipo_cuenta (TC)",
+  "esperadas": 1,
+  "sql": "SELECT e.id_empresa FROM empresa e WHERE NOT EXISTS (SELECT id_tipo_cuenta FROM tipo_cuenta EXCEPT SELECT id_tipo_cuenta FROM plan_cuenta pc WHERE pc.id_empresa = e.id_empresa);"
+ },
+ {
+  "n": 44,
+  "titulo": "Tipos de cuenta con al menos una cuenta en la empresa 1",
+  "algebra": "π id_tipo_cuenta (σ id_empresa=1 (PC))",
+  "esperadas": 7,
+  "sql": "SELECT DISTINCT id_tipo_cuenta FROM plan_cuenta WHERE id_empresa = 1;"
+ },
+ {
+  "n": 45,
+  "titulo": "Código y nombre de las cuentas de activo de la empresa 1",
+  "algebra": "π codigo, nombre (σ id_empresa=1 ∧ clase='ACTIVO' (PC ⋈ TC))",
+  "esperadas": 27,
+  "sql": "SELECT DISTINCT pc.codigo, pc.nombre FROM plan_cuenta pc JOIN tipo_cuenta tc USING (id_tipo_cuenta) WHERE pc.id_empresa = 1 AND tc.clase = 'ACTIVO';"
+ },
+ {
+  "n": 46,
+  "titulo": "Periodos que inician en 2026 y siguen abiertos",
+  "algebra": "π id_periodo (σ fecha_inicio ≥ '2026-01-01' ∧ fecha_inicio ≤ '2026-12-31' ∧ estado='ABIERTO' (PER))",
+  "esperadas": 4,
+  "sql": "SELECT id_periodo FROM periodo_contable WHERE fecha_inicio BETWEEN DATE '2026-01-01' AND DATE '2026-12-31' AND estado = 'ABIERTO';"
+ },
+ {
+  "n": 47,
+  "titulo": "Movimientos de la cuenta 10",
+  "algebra": "σ id_cuenta=10 (MOV)",
+  "esperadas": 0,
+  "sql": "SELECT * FROM movimiento WHERE id_cuenta = 10;"
+ },
+ {
+  "n": 48,
+  "titulo": "Tipos de cuenta acreedores o de clase PASIVO",
+  "algebra": "π id_tipo_cuenta (σ naturaleza='CREDITO' (TC)) ∪ π id_tipo_cuenta (σ clase='PASIVO' (TC))",
+  "esperadas": 4,
+  "sql": "SELECT id_tipo_cuenta FROM tipo_cuenta WHERE naturaleza = 'CREDITO' UNION SELECT id_tipo_cuenta FROM tipo_cuenta WHERE clase = 'PASIVO';"
+ },
+ {
+  "n": 49,
+  "titulo": "Tipos de cuenta sin ninguna cuenta en la empresa 1",
+  "algebra": "π id_tipo_cuenta (TC) − π id_tipo_cuenta (σ id_empresa=1 (PC))",
+  "esperadas": 0,
+  "sql": "SELECT id_tipo_cuenta FROM tipo_cuenta EXCEPT SELECT id_tipo_cuenta FROM plan_cuenta WHERE id_empresa = 1;"
+ },
+ {
+  "n": 50,
+  "titulo": "Movimientos con la fecha de su asiento",
+  "algebra": "π id_movimiento, fecha (MOV ⋈ AS)",
+  "esperadas": 152,
+  "sql": "SELECT DISTINCT m.id_movimiento, a.fecha FROM movimiento m JOIN asiento a ON m.id_asiento = a.id_asiento;"
+ },
+ {
+  "n": 51,
+  "titulo": "Cantidad de movimientos de la cuenta 10",
+  "algebra": "γ COUNT(id_movimiento) → total (σ id_cuenta=10 (MOV))",
+  "esperadas": 1,
+  "sql": "SELECT COUNT(id_movimiento) AS total FROM movimiento WHERE id_cuenta = 10;"
+ }
+]

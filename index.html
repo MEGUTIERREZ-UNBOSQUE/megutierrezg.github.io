@@ -2,113 +2,176 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elias Gutiérrez | E-portafolio</title>
-
-  <!-- Hoja de estilos -->
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elías Gutiérrez · E-portafolio de Bases de Datos 1</title>
+  <meta name="description" content="E-portafolio de Bases de Datos 1 (Universidad El Bosque, 2026-2): modelado entidad-relación, normalización, SQL y un sistema contable en PostgreSQL desplegado en Azure.">
+  <meta property="og:title" content="Elías Gutiérrez · E-portafolio de Bases de Datos 1">
+  <meta property="og:description" content="Modelado, normalización, SQL y el proyecto final: un sistema contable en PostgreSQL.">
+  <meta property="og:image" content="assets/img/avatar.webp">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/estilo.css">
 </head>
 <body>
 
-  <!-- ===================== ENCABEZADO / NAVEGACIÓN ===================== -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <span class="logo">Elias Gutiérrez</span>
-      <nav>
-        <ul class="nav-list">
-          <li><a href="#presentacion">Presentación</a></li>
-          <li><a href="#evidencias">Evidencias</a></li>
+<header class="cabecera">
+  <div class="contenedor">
+    <a class="marca" href="index.html"><b>Elías Gutiérrez</b><span>Bases de Datos 1</span></a>
+    <button class="boton-menu" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav aria-label="Principal">
+      <ul class="menu" id="menu">
+        <li><a href="index.html" aria-current="page">Inicio</a></li>
+        <li><a href="modelado.html">Modelado</a></li>
+        <li><a href="normalizacion.html">Normalización</a></li>
+        <li><a href="sql.html">SQL</a></li>
+        <li><a href="proyecto.html">Proyecto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ===================== HÉROE ===================== -->
+  <section class="contenedor heroe" aria-labelledby="titulo">
+    <div>
+      <p class="consulta" aria-hidden="true"><span class="kw">SELECT</span> * <span class="kw">FROM</span> semestre <span class="kw">WHERE</span> materia = <span class="str">'Bases de Datos 1'</span>;<span class="cursor"></span></p>
+      <h1 id="titulo">Hola, soy Elías.<br>Esto es lo que aprendí sobre datos.</h1>
+      <p class="entrada">Estudio Ingeniería de Sistemas en la Universidad El Bosque. Aquí está todo lo que hice en Bases de Datos 1 durante el semestre 2026-2: desde mi primer diagrama entidad-relación hasta un sistema contable en PostgreSQL desplegado en Azure, con cada taller, clase y decisión explicada.</p>
+      <div class="acciones">
+        <a class="boton boton-primario" href="proyecto.html">Ver el proyecto final
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="boton boton-sec" href="sql.html#laboratorio">Probar la base en el navegador</a>
+      </div>
+    </div>
+    <figure class="heroe-foto">
+      <img src="assets/img/avatar.webp" width="720" height="720" alt="Avatar de Elías Gutiérrez frente a su portátil en el campus de la Universidad El Bosque">
+      <figcaption>Ingeniería de Sistemas · Universidad El Bosque · Bogotá</figcaption>
+    </figure>
+  </section>
+
+  <section class="contenedor" aria-label="El semestre en cifras" style="padding-bottom:72px">
+    <div class="cifras">
+      <div class="cifra"><b>12</b><span>tablas en 3FN en el proyecto final</span></div>
+      <div class="cifra"><b>51</b><span>consultas de álgebra relacional verificadas</span></div>
+      <div class="cifra"><b>11</b><span>reglas de transformación aplicadas</span></div>
+      <div class="cifra"><b>7</b><span>esquemas normalizados paso a paso</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== PRESENTACIÓN ===================== -->
+  <section id="presentacion" class="seccion" aria-labelledby="t-presentacion">
+    <div class="contenedor presentacion">
+      <div>
+        <p class="antetitulo"><b>01</b> · Presentación</p>
+        <h2 id="t-presentacion">Antes de los datos, quién soy</h2>
+        <p style="margin-top:16px;color:var(--tinta-2)">Con este video abrí el semestre. Fue la primera actividad del curso: crear este sitio en GitHub Pages y presentarme en menos de dos minutos.</p>
+        <ul class="preguntas">
+          <li><span>01</span>Cómo me gusta que me llamen</li>
+          <li><span>02</span>Algo que me representa fuera de clase</li>
+          <li><span>03</span>Por qué Bases de Datos 1 me sirve en mi vida profesional</li>
+          <li><span>04</span>«Este semestre quiero demostrar que…»</li>
         </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- ===================== SECCIÓN: PRESENTACIÓN ===================== -->
-  <section id="presentacion" class="section presentacion">
-    <div class="container presentacion-grid">
-
-      <!-- Foto o avatar -->
-      <div class="avatar-wrap">
-        <img src="video/avatar.jpg" alt="Foto de Elias Gutiérrez" class="avatar" id="avatarImg">
       </div>
-
-      <!-- Texto de presentación -->
-      <div class="presentacion-texto">
-        <h1>Hola, soy Elias</h1>
-        <p class="subtitulo">Estudiante de Ingeniería de Sistemas — Universidad El Bosque</p>
-        <p>
-          Bienvenido a mi e-portafolio. Este espacio lo voy a usar durante el semestre
-          para publicar las evidencias del curso de <strong>Bases de Datos 1</strong>:
-          modelado, normalización, consultas SQL y el proyecto final.
-        </p>
-      </div>
-    </div>
-
-    <!-- Video de presentación -->
-    <div class="container video-wrap">
-      <h2>Video de presentación</h2>
-      <div class="video-responsive">
-        <!--
-          Opción A: video embebido local.
-          Coloca tu archivo de video dentro de la carpeta "video/" con el nombre "presentacion.mp4"
-          y este reproductor lo mostrará automáticamente.
-        -->
-        <video controls poster="video/avatar.jpg">
-          <source src="video/presentacion.mp4" type="video/mp4">
-          Tu navegador no soporta la reproducción de video.
-        </video>
-
-        <!--
-          Opción B: si prefieres subir el video a YouTube y solo enlazarlo,
-          borra la etiqueta <video> de arriba y descomenta el iframe de abajo,
-          reemplazando TU_ID_DE_VIDEO por el id del video de YouTube.
-
-          <iframe
-            src="https://www.youtube.com/embed/TU_ID_DE_VIDEO"
-            title="Video de presentación"
-            allowfullscreen>
-          </iframe>
-        -->
+      <div>
+        <div class="video">
+          <video controls preload="metadata" poster="assets/img/avatar.webp">
+            <source src="video/presentacion.mp4" type="video/mp4">
+            Tu navegador no puede reproducir el video. <a href="video/presentacion.mp4">Descárgalo aquí</a>.
+          </video>
+        </div>
+        <p class="peq gris" style="margin-top:10px">Video de presentación · 1 min 15 s</p>
       </div>
     </div>
   </section>
 
-  <!-- ===================== SECCIÓN: EVIDENCIAS (bonus) ===================== -->
-  <section id="evidencias" class="section evidencias">
-    <div class="container">
-      <h2>Evidencias del curso</h2>
-      <p class="evidencias-intro">
-        Aquí iré publicando las evidencias de cada etapa del curso a medida que avance el semestre.
-      </p>
-
-      <div class="evidencias-grid">
-        <div class="evidencia-card">
+  <!-- ===================== EVIDENCIAS ===================== -->
+  <section id="evidencias" class="seccion" aria-labelledby="t-evidencias">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <p class="antetitulo"><b>02</b> · Evidencias</p>
+        <h2 id="t-evidencias">Cuatro partes, un mismo hilo</h2>
+        <p>Cada tema se apoyó en el anterior: modelar bien hace que la normalización sea una revisión y no una reparación, y un modelo normalizado es lo que hace que el SQL salga limpio.</p>
+      </div>
+      <ul class="evidencias">
+        <li><a href="modelado.html">
           <h3>Modelado</h3>
-          <p>Próximamente.</p>
-        </div>
-        <div class="evidencia-card">
+          <p>Entidad-relación en notación de Peter Chen, reducción a tablas con las 11 reglas, modelo relacional y el parcial resuelto.</p>
+          <span class="flecha" aria-hidden="true">→</span></a></li>
+        <li><a href="normalizacion.html">
           <h3>Normalización</h3>
-          <p>Próximamente.</p>
-        </div>
-        <div class="evidencia-card">
+          <p>Dependencias funcionales, anomalías y el paso a paso de 1FN a 3FN, FNBC y 4FN, con un ejercicio que puedes recorrer.</p>
+          <span class="flecha" aria-hidden="true">→</span></a></li>
+        <li><a href="sql.html">
           <h3>SQL</h3>
-          <p>Próximamente.</p>
-        </div>
-        <div class="evidencia-card">
+          <p>Las nueve clases de SQL, mis scripts de práctica y un laboratorio con PostgreSQL real corriendo en tu navegador.</p>
+          <span class="flecha" aria-hidden="true">→</span></a></li>
+        <li><a href="proyecto.html">
           <h3>Proyecto</h3>
-          <p>Próximamente.</p>
-        </div>
-      </div>
+          <p>Sistema contable para pymes: modelo, diccionario, álgebra, PostgreSQL en Azure, API y aplicación web.</p>
+          <span class="flecha" aria-hidden="true">→</span></a></li>
+      </ul>
     </div>
   </section>
 
-  <!-- ===================== PIE DE PÁGINA ===================== -->
-  <footer class="site-footer">
-    <div class="container">
-      <p>&copy; <span id="anio"></span> Elias Gutiérrez — Ingeniería de Sistemas, Universidad El Bosque</p>
+  <!-- ===================== RECORRIDO ===================== -->
+  <section id="recorrido" class="seccion" aria-labelledby="t-recorrido">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <p class="antetitulo"><b>03</b> · Recorrido</p>
+        <h2 id="t-recorrido">El semestre, semana a semana</h2>
+        <p>Así fue avanzando la materia, en el orden en que la viví.</p>
+      </div>
+      <ol class="recorrido">
+        <li><time datetime="2026-08">Agosto</time>
+          <div><h3>Este sitio y el video de presentación</h3><p>Primer espacio profesional publicado en GitHub Pages.</p></div>
+          <a class="ir" href="#presentacion">Ver</a></li>
+        <li><time datetime="2026-08">Agosto</time>
+          <div><h3>Primer modelo relacional en 3FN</h3><p>Un sistema de citas médicas de siete tablas, con su DDL y la justificación de cada forma normal.</p></div>
+          <a class="ir" href="modelado.html#citas">Ver</a></li>
+        <li><time datetime="2026-08-31">31 ago</time>
+          <div><h3>Taller 1 · Reducción a tablas</h3><p>La Terminal Portuaria Bahía Verde: multivaluados, N:M, una ternaria, una agregación y una especialización, todo transformado.</p></div>
+          <a class="ir" href="modelado.html#bahia-verde">Ver</a></li>
+        <li><time datetime="2026-09-10">Septiembre</time>
+          <div><h3>Modelo E-R, jerarquías ISA y modelo relacional</h3><p>Cardinalidad, participación, entidades débiles, las notaciones de Chen, Barker y pata de gallina.</p></div>
+          <a class="ir" href="modelado.html#clases">Ver</a></li>
+        <li><time datetime="2026-09-14">14 sep</time>
+          <div><h3>Parcial 1</h3><p>Modelo E-R, reducción a tablas y modelo relacional de una cadena de cines, más el análisis de un esquema con cuatro errores.</p></div>
+          <a class="ir" href="modelado.html#parcial">Ver</a></li>
+        <li><time datetime="2026-09-17">17–27 sep</time>
+          <div><h3>Normalización</h3><p>De 1FN a 5FN en clase; dos talleres con siete esquemas reales.</p></div>
+          <a class="ir" href="normalizacion.html">Ver</a></li>
+        <li><time datetime="2026-10-23">Octubre</time>
+          <div><h3>SQL de cero a funciones analíticas</h3><p>Nueve clases sobre el esquema HR de Oracle: SELECT, funciones, grupos, joins, subconsultas y conjuntos.</p></div>
+          <a class="ir" href="sql.html">Ver</a></li>
+        <li><time datetime="2026-11-05">Noviembre</time>
+          <div><h3>Proyecto final y sustentación</h3><p>Sistema contable en PostgreSQL sobre tres máquinas virtuales en Azure, con API y aplicación web.</p></div>
+          <a class="ir" href="proyecto.html">Ver</a></li>
+      </ol>
     </div>
-  </footer>
+  </section>
 
-  <script src="script.js"></script>
+  <!-- ===================== CIERRE ===================== -->
+  <section class="seccion" aria-labelledby="t-llevo">
+    <div class="contenedor estrecho">
+      <p class="antetitulo"><b>04</b> · Lo que me llevo</p>
+      <h2 id="t-llevo">Una base de datos es una decisión de diseño</h2>
+      <p class="entrada" style="margin-top:20px">Llegué pensando que una base de datos era un lugar donde se guardan cosas. Salgo entendiendo que cada tabla, cada llave y cada restricción es una regla del negocio escrita de forma que nadie la pueda romper.</p>
+      <p style="margin-top:18px;color:var(--tinta-2)">En el proyecto final eso se volvió concreto: la partida doble, que un periodo no se cruce con otro y que una cuenta padre sea de la misma empresa que su hija no dependen de que la aplicación se acuerde de revisarlo. Lo hace PostgreSQL. Esa es la idea que más me quedó de la materia y la que ya estoy usando en mis otros proyectos.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p>© <span id="anio">2026</span> Elías Gutiérrez · Ingeniería de Sistemas, Universidad El Bosque</p>
+    <p>Bases de Datos 1 · Docente: Ing., Esp., M.Ed. Christian Felipe Duarte</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
 </body>
 </html>

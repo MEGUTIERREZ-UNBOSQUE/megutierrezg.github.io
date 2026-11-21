@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proyecto final · Sistema contable · E-portafolio de Bases de Datos 1</title>
+  <meta name="description" content="Sistema contable para pymes: Balance General y Estado de Resultados sobre PostgreSQL en 3FN, desplegado en tres capas en Azure, con API FastAPI y aplicación Angular.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/estilo.css">
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="contenedor">
+    <a class="marca" href="index.html"><b>Elías Gutiérrez</b><span>Bases de Datos 1</span></a>
+    <button class="boton-menu" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav aria-label="Principal">
+      <ul class="menu" id="menu">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="modelado.html">Modelado</a></li>
+        <li><a href="normalizacion.html">Normalización</a></li>
+        <li><a href="sql.html">SQL</a></li>
+        <li><a href="proyecto.html" aria-current="page">Proyecto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="contenedor portada">
+    <p class="antetitulo"><b>Evidencia 04</b> · Proyecto final · Grupo DataBikers</p>
+    <h1>Un sistema contable que no deja que los números mientan</h1>
+    <p class="entrada">Balance General y Estado de Resultados para pymes, sobre una base PostgreSQL en tercera forma normal, desplegada en tres máquinas virtuales Linux en Microsoft Azure y conectada a una API y una aplicación web.</p>
+    <p class="gris" style="margin-top:18px">Jaume Suárez · Elías Gutiérrez · Laura Torres · Noviembre de 2026</p>
+    <div class="acciones">
+      <a class="boton boton-primario" href="sql.html#laboratorio">Consultar la base en el navegador</a>
+      <a class="boton boton-sec" href="#video">Ver la demostración</a>
+    </div>
+  </section>
+
+  <!-- ===================== PROBLEMA ===================== -->
+  <section class="seccion" aria-labelledby="t-problema">
+    <div class="contenedor dos">
+      <div>
+        <p class="antetitulo">El problema</p>
+        <h2 id="t-problema">Contabilidad en hojas de cálculo que no se hablan</h2>
+      </div>
+      <div>
+        <p>Muchas pymes llevan su contabilidad en archivos sueltos: saldos digitados a mano, asientos sin control de partida doble, un plan de cuentas distinto en cada archivo y balances que no cuadran al cierre.</p>
+        <p>La causa de fondo no es la hoja de cálculo, es que <strong>no hay un modelo de datos</strong> que centralice el plan de cuentas, los asientos y los periodos. Ese fue nuestro punto de partida.</p>
+        <h4 style="margin-top:28px">Objetivos</h4>
+        <ol style="padding-left:1.2em;margin-top:8px;color:var(--tinta-2)">
+          <li>Modelar el dominio con un diagrama E-R (1:1, 1:N, N:M y recursivas).</li>
+          <li>Normalizar el modelo relacional hasta la tercera forma normal.</li>
+          <li>Implementarlo en PostgreSQL con las reglas contables como restricciones.</li>
+          <li>Desplegarlo en máquinas virtuales Linux y conectarlo a una aplicación web.</li>
+          <li>Gestionar todo el código con Git y GitHub.</li>
+        </ol>
+        <p class="peq gris" style="margin-top:18px"><strong>Fuera del alcance:</strong> facturación electrónica, nómina, inventarios, flujo de efectivo y conversión de monedas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MODELO ===================== -->
+  <section id="modelo" class="seccion" aria-labelledby="t-modelo">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <p class="antetitulo">Fase 1 · Diseño</p>
+        <h2 id="t-modelo">Doce tablas, cada hecho en su lugar</h2>
+        <p>Del documento de supuestos salió el modelo entidad-relación; de ahí, la reducción a tablas y el modelo relacional en 3FN, documentado con su diccionario de datos y 51 sentencias de álgebra relacional.</p>
+      </div>
+      <figure class="diagrama">
+        <button data-visor="assets/img/diagramas/mer-contable-01.webp" data-titulo="Modelo entidad-relación del sistema contable"><img src="assets/img/diagramas/mer-contable-01.webp" loading="lazy" alt="Modelo entidad-relación del sistema contable con empresas, periodos, plan de cuentas, asientos, movimientos, terceros y centros de costo"></button>
+        <figcaption><span>Modelo entidad-relación. El plan de cuentas y los rubros son relaciones recursivas: cada cuenta puede tener una cuenta padre.</span><span>Clic para ampliar</span></figcaption>
+      </figure>
+
+      <div class="dos" style="margin-top:56px">
+        <div>
+          <h3>El modelo relacional</h3>
+          <div class="esquema" style="margin-top:16px">
+            <div><span class="t">moneda</span> (<u>id_moneda</u>, codigo, nombre, simbolo)</div>
+            <div><span class="t">empresa</span> (<u>id_empresa</u>, nit, razon_social, <i>id_moneda</i>)</div>
+            <div><span class="t">periodo_contable</span> (<u>id_periodo</u>, <i>id_empresa</i>, fecha_inicio, fecha_fin, estado)</div>
+            <div><span class="t">tipo_cuenta</span> (<u>id_tipo_cuenta</u>, clase, naturaleza)</div>
+            <div><span class="t">rubro_estado</span> (<u>id_rubro</u>, <i>id_rubro_padre</i>, codigo, nombre, estado_financiero, orden)</div>
+            <div><span class="t">plan_cuenta</span> (<u>id_cuenta</u>, <i>id_empresa</i>, <i>id_cuenta_padre</i>, <i>id_tipo_cuenta</i>, <i>id_rubro</i>, codigo, nombre, nivel, acepta_movimiento)</div>
+            <div><span class="t">tipo_asiento</span> (<u>id_tipo_asiento</u>, nombre)</div>
+            <div><span class="t">asiento</span> (<u>id_asiento</u>, <i>id_periodo</i>, <i>id_tipo_asiento</i>, numero, fecha, descripcion, estado)</div>
+            <div><span class="t">tercero</span> (<u>id_tercero</u>, <i>id_empresa</i>, documento, nombre, tipo)</div>
+            <div><span class="t">centro_costo</span> (<u>id_centro_costo</u>, <i>id_empresa</i>, codigo, nombre)</div>
+            <div><span class="t">movimiento</span> (<u>id_movimiento</u>, <i>id_asiento</i>, <i>id_cuenta</i>, <i>id_tercero</i>, <i>id_centro_costo</i>, debe, haber)</div>
+            <div><span class="t">cierre_periodo</span> (<u>id_cierre</u>, <i>id_periodo</i>, <i>id_asiento_cierre</i>, utilidad_neta, fecha_cierre)</div>
+          </div>
+          <p class="peq gris" style="margin-top:10px">Subrayado: llave primaria. En azul: llave foránea.</p>
+        </div>
+        <div>
+          <h3>Las reglas que viven en la base</h3>
+          <p style="margin-top:12px;color:var(--tinta-2)">La decisión más importante del proyecto: las reglas contables no dependen de que la aplicación se acuerde de validarlas. PostgreSQL las hace cumplir.</p>
+          <ul class="df" style="margin-top:16px">
+            <li><span>debe &gt; 0 xor haber &gt; 0</span><span>Un movimiento va al debe o al haber, nunca a los dos</span></li>
+            <li><span>EXCLUDE USING gist</span><span>Dos periodos de una empresa no se pueden cruzar</span></li>
+            <li><span>FK (id_empresa, id_cuenta_padre)</span><span>La cuenta padre es de la misma empresa que la hija</span></li>
+            <li><span>UNIQUE (id_periodo, numero)</span><span>No hay dos asientos con el mismo número en un periodo</span></li>
+            <li><span>CHECK clase IN (…)</span><span>Solo las seis clases contables y dos naturalezas</span></li>
+            <li><span>fecha_fin &gt; fecha_inicio</span><span>Periodos con fechas coherentes</span></li>
+            <li><span>ON DELETE RESTRICT</span><span>Nada se borra si otro registro depende de él</span></li>
+          </ul>
+          <p style="margin-top:18px"><a href="sql.html#m-check">Intenta romper la primera regla en el laboratorio →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ARQUITECTURA ===================== -->
+  <section id="arquitectura" class="seccion" aria-labelledby="t-arq">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <p class="antetitulo">Fase 2 · Implementación</p>
+        <h2 id="t-arq">Tres capas en Azure</h2>
+        <p>Analizamos y justificamos la elección del sistema operativo (Ubuntu Server) y del gestor (PostgreSQL). Cada capa vive en su propia máquina virtual y en su propia subred; solo la capa web recibe tráfico de internet.</p>
+      </div>
+      <div class="tabla-envoltura">
+        <table class="datos">
+          <thead><tr><th>Capa</th><th>Máquina</th><th>Software</th><th>Quién la puede alcanzar</th></tr></thead>
+          <tbody>
+            <tr><td>Presentación</td><td>VM-Front</td><td>Nginx sirviendo la aplicación Angular y reenviando <code>/api/</code></td><td>Internet (HTTP), con UFW y fail2ban</td></tr>
+            <tr><td>Lógica</td><td>VM-Back</td><td>API REST en FastAPI con un pool de conexiones a PostgreSQL</td><td>Solo VM-Front, por la red privada</td></tr>
+            <tr><td>Datos</td><td>VM-DB</td><td>PostgreSQL con un rol de aplicación de privilegio mínimo</td><td>Solo VM-Back, por la red privada</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MI PARTE ===================== -->
+  <section id="mi-parte" class="seccion" aria-labelledby="t-parte">
+    <div class="contenedor">
+      <article class="evidencia">
+        <div class="evidencia-meta">
+          <time>Mi parte</time>
+          <h3 id="t-parte">La conexión entre la base y las personas</h3>
+          <dl><dt>Repositorios</dt><dd><a href="https://github.com/eliasgdev/db-unbosque-api">db-unbosque-api</a><br><a href="https://github.com/eliasgdev/db-unbosque-front">db-unbosque-front</a></dd><dt>Tecnologías</dt><dd>FastAPI, psycopg 3, Angular, Nginx</dd></dl>
+        </div>
+        <div class="evidencia-cuerpo">
+          <p>Me encargué de que la base de datos se pudiera usar: la API, la aplicación web, la conexión entre ambas y el despliegue del frontend.</p>
+          <ul>
+            <li><strong>API sin ORM.</strong> Cada consulta está escrita a mano en SQL parametrizado, en un módulo por entidad y con su propósito documentado. Arquitectura por capas: rutas → servicios → repositorios → base de datos.</li>
+            <li><strong>Reglas contables también en la API.</strong> Partida doble, periodo cerrado, solo cuentas hoja con movimientos y un cierre de periodo atómico. El Balance General y el Estado de Resultados se calculan en el momento, no se guardan.</li>
+            <li><strong>Aplicación web en Angular</strong> con Atomic Design: plan de cuentas como árbol, registro y contabilización de asientos, terceros, empresas y periodos, y los dos estados financieros.</li>
+            <li><strong>Despliegue del frontend</strong> en VM-Front con Nginx, publicaciones versionadas para poder volver atrás, firewall y fail2ban.</li>
+          </ul>
+
+          <div class="fila-cab" style="margin-top:44px">
+            <h4 style="margin:0">La aplicación</h4>
+            <div class="galeria-nav" data-galeria="galeria-app">
+              <button type="button" data-dir="-1" aria-label="Captura anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+              <button type="button" data-dir="1" aria-label="Captura siguiente"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            </div>
+          </div>
+          <div class="galeria" id="galeria-app" tabindex="0" aria-label="Capturas de la aplicación">
+            <figure><img src="assets/img/app/01_resumen.webp" loading="lazy" width="1600" height="1000" alt="Pantalla de resumen con ingresos, costos, utilidad y ecuación contable" data-visor="assets/img/app/01_resumen.webp" data-titulo="Resumen del periodo"><figcaption>Resumen: indicadores del periodo y la ecuación contable comprobada.</figcaption></figure>
+            <figure><img src="assets/img/app/02_plan_de_cuentas.webp" loading="lazy" width="1600" height="1000" alt="Plan de cuentas en forma de árbol" data-visor="assets/img/app/02_plan_de_cuentas.webp" data-titulo="Plan de cuentas"><figcaption>Plan de cuentas jerárquico, con la relación recursiva hecha árbol.</figcaption></figure>
+            <figure><img src="assets/img/app/03_asientos.webp" loading="lazy" width="1600" height="1000" alt="Lista de asientos del periodo" data-visor="assets/img/app/03_asientos.webp" data-titulo="Asientos"><figcaption>Asientos del periodo, en borrador o contabilizados.</figcaption></figure>
+            <figure><img src="assets/img/app/08_formulario_nuevo_asiento.webp" loading="lazy" width="1600" height="1000" alt="Formulario para registrar un asiento con sus movimientos" data-visor="assets/img/app/08_formulario_nuevo_asiento.webp" data-titulo="Nuevo asiento"><figcaption>Registro de un asiento: no se puede contabilizar si no cuadra.</figcaption></figure>
+            <figure><img src="assets/img/app/06_estado_de_resultados.webp" loading="lazy" width="1600" height="1000" alt="Estado de resultados" data-visor="assets/img/app/06_estado_de_resultados.webp" data-titulo="Estado de Resultados"><figcaption>Estado de Resultados calculado por la API.</figcaption></figure>
+            <figure><img src="assets/img/app/07_balance_general.webp" loading="lazy" width="1600" height="1000" alt="Balance general" data-visor="assets/img/app/07_balance_general.webp" data-titulo="Balance General"><figcaption>Balance General por rubros.</figcaption></figure>
+            <figure><img src="assets/img/app/04_terceros.webp" loading="lazy" width="1600" height="1000" alt="Terceros y centros de costo" data-visor="assets/img/app/04_terceros.webp" data-titulo="Terceros y centros de costo"><figcaption>Terceros y centros de costo.</figcaption></figure>
+            <figure><img src="assets/img/app/05_empresas.webp" loading="lazy" width="1600" height="1000" alt="Empresas y periodos contables" data-visor="assets/img/app/05_empresas.webp" data-titulo="Empresas y periodos"><figcaption>Empresas, apertura y cierre de periodos.</figcaption></figure>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== VIDEO ===================== -->
+  <section id="video" class="seccion" aria-labelledby="t-video">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <h2 id="t-video">La demostración</h2>
+        <p>El video de entrega, con los tres integrantes: la base, las máquinas virtuales y la aplicación funcionando.</p>
+      </div>
+      <div class="video" style="max-width:960px">
+        <iframe src="https://www.youtube-nocookie.com/embed/3WmeUbJrALA" title="Video de demostración del sistema contable" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
+      </div>
+      <p class="peq gris" style="margin-top:10px">Si no carga, <a href="https://youtu.be/3WmeUbJrALA">míralo en YouTube</a>.</p>
+    </div>
+  </section>
+
+  <!-- ===================== EQUIPO Y DOCUMENTOS ===================== -->
+  <section id="documentos" class="seccion" aria-labelledby="t-docs">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <h2 id="t-docs">Documentos y créditos</h2>
+        <p>Todo se entregó en formato de artículo IEEE. Cada documento indica quién lo elaboró: este proyecto fue de los tres.</p>
+      </div>
+      <div class="tres">
+        <div>
+          <h4>Fase 1 · Diseño</h4>
+          <p class="peq gris" style="margin-bottom:10px">Elaborados por Laura Torres</p>
+          <ul class="archivos">
+            <li><a href="documentos/proyecto/fase1-01_Propuesta_del_Proyecto.pdf"><span>Propuesta del proyecto</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/fase1-02_Documento_de_Supuestos.pdf"><span>Documento de supuestos</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/fase1-03_Modelo_ER_Peter_Chen.pdf"><span>Modelo E-R · Peter Chen</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/fase1-04_Modelo_ER_Extendido.pdf"><span>Modelo E-R extendido</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/fase1-05_Modelo_ER_Crows_Foot.pdf"><span>Modelo E-R · pata de gallina</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/fase1-06_Modelo_Relacional_Crows_Foot.pdf"><span>Modelo relacional</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/fase1-07_Diccionario_de_Datos.pdf"><span>Diccionario de datos</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/fase1-08_Algebra_Relacional.pdf"><span>51 sentencias de álgebra relacional</span><span>PDF</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Fase 2 · Implementación</h4>
+          <p class="peq gris" style="margin-bottom:10px">Análisis: Laura Torres · VM, RDBMS y scripts: Jaume Suárez · API, web y conexión: Elías Gutiérrez</p>
+          <ul class="archivos">
+            <li><a href="documentos/proyecto/fase2-01_Analisis_Seleccion_Sistema_Operativo.pdf"><span>Selección del sistema operativo</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/fase2-03_Analisis_Seleccion_RDBMS.pdf"><span>Selección del gestor de base de datos</span><span>PDF</span></a></li>
+            <li><a href="assets/sql/01_ddl_tablas.sql"><span>Script de creación de tablas</span><span>SQL</span></a></li>
+            <li><a href="assets/sql/02_seed_datos_realistas.sql"><span>Script de datos de prueba</span><span>SQL</span></a></li>
+            <li><a href="https://github.com/eliasgdev/db-unbosque-api"><span>Repositorio de la API</span><span>GITHUB</span></a></li>
+            <li><a href="https://github.com/eliasgdev/db-unbosque-front"><span>Repositorio de la aplicación web</span><span>GITHUB</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Gestión del proyecto</h4>
+          <p class="peq gris" style="margin-bottom:10px">Elaborados por el grupo</p>
+          <ul class="archivos">
+            <li><a href="documentos/proyecto/gestion-01_Acta_de_Constitucion.pdf"><span>Acta de constitución</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/gestion-02_Identificacion_de_Interesados.pdf"><span>Identificación de interesados</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/gestion-03_EDT_WBS.pdf"><span>EDT / WBS</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/gestion-04_Cronograma.pdf"><span>Cronograma</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/gestion-05_Presupuesto.pdf"><span>Presupuesto</span><span>PDF</span></a></li>
+            <li><a href="documentos/proyecto/gestion-06_Acta_de_Cierre.pdf"><span>Acta de cierre</span><span>PDF</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="peq gris" style="margin-top:28px">El documento final y los informes de implementación de las máquinas virtuales no se publican aquí porque describen la red interna del despliegue.</p>
+    </div>
+  </section>
+
+  <section class="seccion" aria-labelledby="t-aprendi">
+    <div class="contenedor estrecho">
+      <p class="antetitulo">Lo que aprendí</p>
+      <h2 id="t-aprendi">El modelo manda</h2>
+      <p class="entrada" style="margin-top:20px">Una pantalla difícil de construir casi siempre escondía una consulta mal pensada, y una consulta difícil casi siempre escondía una duda sobre el modelo. Cuando el modelo está claro, la API y la aplicación salen mucho más fáciles.</p>
+      <p style="margin-top:18px;color:var(--tinta-2)">También aprendí a trabajar sobre el trabajo de otros: el modelo de Laura y los scripts de Jaume eran el contrato que mi API tenía que respetar. Escribir el SQL a mano, sin ORM, me obligó a entender cada tabla y cada llave que ellos diseñaron.</p>
+    </div>
+  </section>
+
+  <nav class="contenedor siguiente" aria-label="Navegación entre evidencias">
+    <a href="sql.html"><span>← Anterior</span><b>SQL</b></a>
+    <a href="index.html"><span>Volver →</span><b>Inicio</b></a>
+  </nav>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p>© <span id="anio">2026</span> Elías Gutiérrez · Ingeniería de Sistemas, Universidad El Bosque</p>
+    <p>Bases de Datos 1 · Docente: Ing., Esp., M.Ed. Christian Felipe Duarte</p>
+  </div>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

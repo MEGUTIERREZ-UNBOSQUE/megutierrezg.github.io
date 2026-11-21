@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modelado · E-portafolio de Bases de Datos 1 · Elías Gutiérrez</title>
+  <meta name="description" content="Modelo entidad-relación, reducción a tablas con las 11 reglas de transformación, modelo relacional y el parcial 1 resuelto.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/estilo.css">
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="contenedor">
+    <a class="marca" href="index.html"><b>Elías Gutiérrez</b><span>Bases de Datos 1</span></a>
+    <button class="boton-menu" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav aria-label="Principal">
+      <ul class="menu" id="menu">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="modelado.html" aria-current="page">Modelado</a></li>
+        <li><a href="normalizacion.html">Normalización</a></li>
+        <li><a href="sql.html">SQL</a></li>
+        <li><a href="proyecto.html">Proyecto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="contenedor portada">
+    <p class="antetitulo"><b>Evidencia 01</b> · Agosto y septiembre</p>
+    <h1>Modelado</h1>
+    <p class="entrada">Aprender a mirar un negocio y verlo como entidades, relaciones y reglas. Esta fue la parte de la materia en la que más dibujé y más borré: casi todo error de una base de datos empieza aquí.</p>
+  </section>
+
+  <!-- ===================== CLASES ===================== -->
+  <section id="clases" class="seccion" aria-labelledby="t-clases">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <h2 id="t-clases">Lo que vimos en clase</h2>
+        <p>Cinco sesiones que construyen una sobre otra, del concepto de base de datos a las reglas para convertir un diagrama en tablas.</p>
+      </div>
+      <ol class="clases">
+        <li><time>Clase 1</time><div><h4>Introducción a las bases de datos</h4><p>Por qué no bastan los archivos de texto, qué es un esquema, el sistema gestor y sus componentes, los tres niveles del modelado (conceptual, lógico y físico) y los primeros ejercicios con una aerolínea, una biblioteca y un hospital.</p></div></li>
+        <li><time>Clase 2</time><div><h4>Modelo entidad-relación</h4><p>Entidades fuertes y débiles, los tipos de atributo (simple, compuesto, multivaluado, derivado), cardinalidad y participación, relaciones recursivas con roles, claves, generalización y agregación.</p></div></li>
+        <li><time>Clase 3</time><div><h4>Jerarquías ISA</h4><p>Exclusividad (disjunta o solapada) y obligatoriedad (total o parcial): las cuatro combinaciones y cómo se leen en un diagrama.</p></div></li>
+        <li><time>Clase 4</time><div><h4>Modelo relacional</h4><p>La definición formal de relación, valores nulos, superclaves, claves candidatas y foráneas, integridad de entidad y referencial, qué pasa al borrar el padre, y las notaciones de Barker y pata de gallina.</p></div></li>
+        <li><time>Clase 5</time><div><h4>Del MER al modelo relacional</h4><p>El método completo en once reglas y el cuadro de decisión para las jerarquías. Es la clase que más usé el resto del semestre.</p></div></li>
+      </ol>
+
+      <h3 style="margin:56px 0 18px">Las once reglas, en una tabla</h3>
+      <div class="tabla-envoltura">
+        <table class="datos">
+          <thead><tr><th>Regla</th><th>Elemento del MER</th><th>Cómo se transforma</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>Atributo multivaluado</td><td>Entidad débil nueva con el valor como clave parcial</td></tr>
+            <tr><td class="num">2</td><td>Atributo compuesto</td><td>Se descompone en sus atributos simples</td></tr>
+            <tr><td class="num">3</td><td>Entidad</td><td>Una tabla con sus atributos simples; el derivado no se guarda</td></tr>
+            <tr><td class="num">4</td><td>1:1 con participación total</td><td>La llave va al lado obligatorio (o se fusionan)</td></tr>
+            <tr><td class="num">5</td><td>1:1 con participación parcial</td><td>Llave foránea única en uno de los lados</td></tr>
+            <tr><td class="num">6</td><td>1:N con el lado «muchos» obligatorio</td><td>Llave foránea NOT NULL en el lado N</td></tr>
+            <tr><td class="num">7</td><td>1:N con participación parcial</td><td>Llave foránea que admite nulos en el lado N</td></tr>
+            <tr><td class="num">8</td><td>N:M</td><td>Tabla nueva con las dos llaves y los atributos de la relación</td></tr>
+            <tr><td class="num">9</td><td>Relación n-aria</td><td>Tabla nueva con las llaves de todos los participantes</td></tr>
+            <tr><td class="num">10</td><td>Relación reflexiva</td><td>Llave foránea a la misma tabla con el nombre del rol</td></tr>
+            <tr><td class="num">11</td><td>Generalización</td><td>Tabla por subtipo, tabla única con discriminador o solo subtipos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EVIDENCIAS ===================== -->
+  <section class="seccion" aria-label="Talleres de modelado">
+    <div class="contenedor">
+
+      <!-- Citas médicas -->
+      <article class="evidencia" id="citas">
+        <div class="evidencia-meta">
+          <time datetime="2026-08-20">20 de agosto</time>
+          <h3>Modelo relacional en 3FN: citas médicas</h3>
+          <dl><dt>Tipo</dt><dd>Taller en grupo</dd><dt>Herramienta</dt><dd>Designer, SQL DDL</dd></dl>
+        </div>
+        <div class="evidencia-cuerpo">
+          <p>El primer modelo completo del semestre. Muchos consultorios pequeños todavía asignan citas en agendas de papel o en hojas de cálculo, y eso termina en dobles asignaciones y en historiales perdidos. Propusimos una base de siete tablas que centraliza pacientes, médicos, horarios, consultorios, citas y pagos.</p>
+          <div class="esquema" aria-label="Esquema relacional">
+            <div><span class="t">especialidad</span> (<u>especialidad_id</u>, nombre_especialidad)</div>
+            <div><span class="t">consultorio</span> (<u>consultorio_id</u>, nombre, ubicacion)</div>
+            <div><span class="t">paciente</span> (<u>paciente_id</u>, documento, nombres, apellidos, fecha_nacimiento, telefono, email, direccion)</div>
+            <div><span class="t">medico</span> (<u>medico_id</u>, documento, nombres, apellidos, telefono, email, <i>especialidad_id</i>)</div>
+            <div><span class="t">horario_medico</span> (<u>horario_id</u>, <i>medico_id</i>, dia_semana, hora_inicio, hora_fin)</div>
+            <div><span class="t">cita</span> (<u>cita_id</u>, <i>paciente_id</i>, <i>medico_id</i>, <i>consultorio_id</i>, fecha_hora, motivo, estado)</div>
+            <div><span class="t">pago</span> (<u>pago_id</u>, <i>cita_id</i> único, monto, fecha_pago, metodo_pago)</div>
+          </div>
+          <p class="peq gris">Subrayado: llave primaria. En azul: llave foránea.</p>
+          <h4>Cómo justificamos cada forma normal</h4>
+          <ul>
+            <li><strong>1FN:</strong> cada celda guarda un solo valor. Las citas de un paciente no son columnas <code>cita1</code>, <code>cita2</code>, sino filas en <code>cita</code>.</li>
+            <li><strong>2FN:</strong> todas las llaves primarias son simples, así que no puede haber dependencias parciales.</li>
+            <li><strong>3FN:</strong> el nombre de la especialidad no vive en <code>medico</code>, porque dependería de <code>especialidad_id</code> y no de la llave. Por eso tiene su propia tabla.</li>
+            <li>La relación cita–pago es 1 a 0..1 y se garantiza con un <code>UNIQUE</code> sobre <code>pago.cita_id</code>.</li>
+          </ul>
+          <div class="aprendi"><span class="etiqueta">Lo que aprendí</span>
+            <p>Que normalizar no es aplicar una receta al final: si el modelo está bien pensado desde el principio, la 3FN casi sale sola. También comparamos el DDL de varios motores y vi que el modelo es el mismo aunque cambie la sintaxis.</p></div>
+        </div>
+      </article>
+
+      <!-- Bahía Verde -->
+      <article class="evidencia" id="bahia-verde">
+        <div class="evidencia-meta">
+          <time datetime="2026-08-31">31 de agosto</time>
+          <h3>Taller 1 · Reducción a tablas: Terminal Portuaria Bahía Verde</h3>
+          <dl><dt>Tipo</dt><dd>Taller en clase, grupo 2</dd><dt>Notación</dt><dd>Peter Chen, en draw.io</dd><dt>Resultado</dt><dd>9 modelos transformados con su justificación</dd></dl>
+        </div>
+        <div class="evidencia-cuerpo">
+          <p>El docente nos dio un modelo conceptual correcto de un puerto (importadores, servicios, recaladas, buques, operarios, contratistas y bodegas) y la tarea era <strong>transformarlo, no rediseñarlo</strong>. Al final solo podían quedar entidades, atributos simples y relaciones binarias 1:1 o 1:N. Cada transformación sin justificación valía la mitad, así que cada decisión quedó escrita.</p>
+
+          <div class="pestanas">
+            <div role="tablist" aria-label="Ejercicios del taller 1">
+              <button role="tab" id="tb-0" aria-controls="pb-0" aria-selected="true">Modelo de partida</button>
+              <button role="tab" id="tb-1" aria-controls="pb-1">1a · Importador</button>
+              <button role="tab" id="tb-2" aria-controls="pb-2">1b · Contratista</button>
+              <button role="tab" id="tb-3" aria-controls="pb-3">2a · Embarque</button>
+              <button role="tab" id="tb-4" aria-controls="pb-4">2b · Cuadrilla</button>
+              <button role="tab" id="tb-5" aria-controls="pb-5">3a · Ternaria</button>
+              <button role="tab" id="tb-6" aria-controls="pb-6">3b · Agregación</button>
+              <button role="tab" id="tb-7" aria-controls="pb-7">4a · Especialización</button>
+              <button role="tab" id="tb-8" aria-controls="pb-8">4b · Recursivas</button>
+            </div>
+            <div role="tabpanel" id="pb-0" aria-labelledby="tb-0">
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/taller1-01.webp" data-titulo="Modelo de partida · Terminal Portuaria Bahía Verde"><img src="assets/img/diagramas/taller1-01.webp" loading="lazy" alt="Modelo entidad-relación de partida de la Terminal Portuaria Bahía Verde en notación de Peter Chen"></button><figcaption><span>Modelo conceptual validado: diez relaciones, una ternaria, una agregación y una especialización.</span><span>Clic para ampliar</span></figcaption></figure>
+            </div>
+            <div role="tabpanel" id="pb-1" aria-labelledby="tb-1" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/taller1-02.webp" data-titulo="Ejercicio 1a · IMPORTADOR"><img src="assets/img/diagramas/taller1-02.webp" loading="lazy" alt="Transformación de los atributos de IMPORTADOR"></button><figcaption><span>Compuesto, multivaluado y derivado en una sola entidad.</span><span>Clic para ampliar</span></figcaption></figure>
+              <p><strong>nombre_completo</strong> se descompone en <code>nombres</code> y <code>apellidos</code>. <strong>correo</strong>, que es multivaluado, pasa a la entidad débil <code>CORREO_IMPORTADOR</code>, identificada por documento + correo. <strong>antiguedad_cliente</strong> desaparece porque se calcula a partir de <code>fecha_registro</code>: guardarlo sería redundante y quedaría desactualizado.</p>
+              <p>Si se limitara a dos correos, propusimos mantener la entidad débil y controlar el límite como regla de negocio: <code>correo1</code> y <code>correo2</code> funcionan, pero dejan columnas nulas y obligan a cambiar la tabla si el límite sube.</p>
+            </div>
+            <div role="tabpanel" id="pb-2" aria-labelledby="tb-2" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/taller1-03.webp" data-titulo="Ejercicio 1b · CONTRATISTA"><img src="assets/img/diagramas/taller1-03.webp" loading="lazy" alt="Transformación del atributo sede de CONTRATISTA"></button><figcaption><span>Sede: multivaluado y compuesto a la vez.</span><span>Clic para ampliar</span></figcaption></figure>
+              <p>El orden importa: <strong>primero el multivaluado, después el compuesto</strong>. Se crea <code>SEDE_CONTRATISTA</code> y dentro de ella se separan <code>ciudad</code> y <code>direccion</code>. Al revés, terminaríamos con una lista de ciudades y otra de direcciones sin saber cuál va con cuál.</p>
+            </div>
+            <div role="tabpanel" id="pb-3" aria-labelledby="tb-3" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/taller1-04.webp" data-titulo="Ejercicio 2a · EMBARQUE"><img src="assets/img/diagramas/taller1-04.webp" loading="lazy" alt="Transformación de la relación N:M EMBARQUE"></button><figcaption><span>Una N:M con atributos se vuelve entidad.</span><span>Clic para ampliar</span></figcaption></figure>
+              <p><code>EMBARQUE</code> es débil con <strong>doble dependencia identificadora</strong>: su clave es documento del importador + código del servicio + fecha de arribo, porque la recalada ya era débil respecto al servicio. Reemplazarla por dos 1:N directas obligaría a que cada recalada tuviera un solo importador y dejaría sin lugar a <code>tipo_carga</code>, <code>peso_toneladas</code> y <code>fecha_solicitud</code>.</p>
+            </div>
+            <div role="tabpanel" id="pb-4" aria-labelledby="tb-4" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/taller1-05.webp" data-titulo="Ejercicio 2b · CUADRILLA"><img src="assets/img/diagramas/taller1-05.webp" loading="lazy" alt="Transformación de la relación N:M CUADRILLA"></button><figcaption><span>Turno y horas no caben ni en operario ni en recalada.</span><span>Clic para ampliar</span></figcaption></figure>
+              <p>Un operario trabaja en muchas recaladas con turnos distintos, y una recalada tiene muchos operarios con horas distintas. Por eso <code>turno</code> y <code>horas_trabajadas</code> solo tienen sentido en la combinación de los dos: la entidad <code>CUADRILLA</code>.</p>
+            </div>
+            <div role="tabpanel" id="pb-5" aria-labelledby="tb-5" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/taller1-06.webp" data-titulo="Ejercicio 3a · ABASTECIMIENTO"><img src="assets/img/diagramas/taller1-06.webp" loading="lazy" alt="Transformación de la relación ternaria ABASTECE"></button><figcaption><span>Una ternaria M:N:N se vuelve tres 1:N.</span><span>Clic para ampliar</span></figcaption></figure>
+              <p>La clave de <code>ABASTECIMIENTO</code> necesita los tres identificadores (contratista, recalada y suministro), porque varios contratistas pueden entregar el mismo suministro en la misma recalada. Si el puerto exigiera un solo contratista por pareja, el <code>nit</code> dejaría de ser parte de la clave y pasaría a ser una llave foránea más.</p>
+            </div>
+            <div role="tabpanel" id="pb-6" aria-labelledby="tb-6" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/taller1-07.webp" data-titulo="Ejercicio 3b · DEPOSITA"><img src="assets/img/diagramas/taller1-07.webp" loading="lazy" alt="Transformación de la agregación DEPOSITA"></button><figcaption><span>La agregación se apoya en la entidad EMBARQUE.</span><span>Clic para ampliar</span></figcaption></figure>
+              <p>Lo que se guarda en una bodega no es el importador ni la recalada por separado, sino <strong>cada embarque</strong>. Por eso la relación queda entre <code>EMBARQUE</code> (N, total) y <code>BODEGA</code> (1, parcial): todo embarque está en una bodega, pero puede haber bodegas vacías.</p>
+            </div>
+            <div role="tabpanel" id="pb-7" aria-labelledby="tb-7" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/taller1-08.webp" data-titulo="Ejercicio 4a · Especialización de OPERARIO"><img src="assets/img/diagramas/taller1-08.webp" loading="lazy" alt="Transformación de la especialización de OPERARIO en GRUERO y ESTIBADOR"></button><figcaption><span>Jerarquía parcial y solapada.</span><span>Clic para ampliar</span></figcaption></figure>
+              <p>Cada subtipo queda como entidad con una relación 1:1 hacia <code>OPERARIO</code>. Así un mismo operario puede ser gruero y estibador a la vez. Descartamos la tabla única con discriminador porque un campo «rol» no puede tener dos valores en la misma fila. Además, <code>equipos_manejados</code> era multivaluado y generó su propia entidad débil.</p>
+            </div>
+            <div role="tabpanel" id="pb-8" aria-labelledby="tb-8" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/taller1-09.webp" data-titulo="Ejercicio 4b · SUPERVISA y TRANSBORDA"><img src="assets/img/diagramas/taller1-09.webp" loading="lazy" alt="Transformación de las relaciones recursivas SUPERVISA y TRANSBORDA"></button><figcaption><span>Dos recursivas, dos tratamientos distintos.</span><span>Clic para ampliar</span></figcaption></figure>
+              <p>La regla depende de la cardinalidad, no de que la relación sea recursiva. <code>SUPERVISA</code> es M:N y se vuelve la entidad <code>SUPERVISION</code> con el periodo. <code>TRANSBORDA</code> es 1:N y basta con una llave foránea de la recalada hacia sí misma.</p>
+            </div>
+          </div>
+
+          <ul class="archivos">
+            <li><a href="documentos/talleres/Taller1_Reduccion_a_Tablas_Justificaciones.pdf"><span>Justificaciones escritas del taller</span><span>PDF</span></a></li>
+            <li><a href="documentos/originales/Taller1_Bahia_Verde.drawio" download><span>Archivo original de draw.io con las 9 páginas</span><span>DRAWIO</span></a></li>
+          </ul>
+          <div class="aprendi"><span class="etiqueta">Lo que aprendí</span>
+            <p>Que transformar es más difícil que dibujar. Cada regla tiene un porqué, y si no lo puedo explicar con un ejemplo del negocio («el operario X trabajó en la mañana en una recalada y en la noche en otra»), es porque todavía no la entiendo.</p></div>
+        </div>
+      </article>
+
+      <!-- Parcial -->
+      <article class="evidencia" id="parcial">
+        <div class="evidencia-meta">
+          <time datetime="2026-09-14">14 de septiembre</time>
+          <h3>Parcial 1 · Una cadena de cines</h3>
+          <dl><dt>Tipo</dt><dd>Evaluación individual</dd><dt>Puntos</dt><dd>Modelo E-R, reducción a tablas, modelo relacional y análisis crítico</dd></dl>
+        </div>
+        <div class="evidencia-cuerpo">
+          <p>Sedes con salas, salas con sillas, funciones, películas, clientes que compran boletas por distintos canales y empleados con supervisor. Lo modelé de punta a punta y después tuve que revisar el esquema de «otro estudiante» y encontrar sus errores.</p>
+          <div class="pestanas">
+            <div role="tablist" aria-label="Puntos del parcial">
+              <button role="tab" id="tp-0" aria-controls="pp-0" aria-selected="true">1 · Modelo E-R</button>
+              <button role="tab" id="tp-1" aria-controls="pp-1">2 · Reducción a tablas</button>
+              <button role="tab" id="tp-2" aria-controls="pp-2">3 · Relacional y análisis</button>
+            </div>
+            <div role="tabpanel" id="pp-0" aria-labelledby="tp-0">
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/parcial1-01.webp" data-titulo="Parcial 1 · Modelo E-R (Peter Chen)"><img src="assets/img/diagramas/parcial1-01.webp" loading="lazy" alt="Modelo entidad-relación de la cadena de cines"></button><figcaption><span>Notación de Peter Chen con entidades débiles para sala, silla y función.</span><span>Clic para ampliar</span></figcaption></figure>
+            </div>
+            <div role="tabpanel" id="pp-1" aria-labelledby="tp-1" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/parcial1-02.webp" data-titulo="Parcial 1 · Reducción a tablas"><img src="assets/img/diagramas/parcial1-02.webp" loading="lazy" alt="Reducción a tablas del modelo de cines"></button><figcaption><span>Tablas resultantes con llaves primarias y foráneas.</span><span>Clic para ampliar</span></figcaption></figure>
+            </div>
+            <div role="tabpanel" id="pp-2" aria-labelledby="tp-2" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/parcial1-03.webp" data-titulo="Parcial 1 · Modelo relacional y análisis crítico"><img src="assets/img/diagramas/parcial1-03.webp" loading="lazy" alt="Preguntas de análisis y los cuatro errores del esquema entregado"></button><figcaption><span>Grado, cardinalidad, claves candidatas, nulos y los 4 errores.</span><span>Clic para ampliar</span></figcaption></figure>
+            </div>
+          </div>
+          <h4>Los cuatro errores que encontré</h4>
+          <ol>
+            <li><code>telefono1</code> y <code>telefono2</code> en <code>SEDE</code>: un multivaluado convertido en columnas fijas. Con un tercer teléfono el dato no cabe.</li>
+            <li>Sala, silla y función con llave primaria incompleta: la «sala 3» de Bogotá y la de Medellín serían la misma fila.</li>
+            <li>No existe la tabla <code>COMPRA</code>: la N:M cliente–función se metió en <code>CLIENTE</code>, así que cada cliente solo podría comprar una vez.</li>
+            <li><code>edad</code> guardada en <code>CLIENTE</code>: un derivado que se desactualiza con el tiempo.</li>
+          </ol>
+          <ul class="archivos">
+            <li><a href="documentos/originales/Parcial1_Solucion.drawio" download><span>Solución completa en draw.io</span><span>DRAWIO</span></a></li>
+          </ul>
+          <div class="aprendi"><span class="etiqueta">Lo que aprendí</span>
+            <p>Que encontrar errores en el modelo de otro es la mejor forma de comprobar que entendí las reglas. La cardinalidad es una propiedad del esquema, no de los datos: aunque hoy haya 200 clientes y 500 funciones, la relación sigue siendo N:M.</p></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <nav class="contenedor siguiente" aria-label="Navegación entre evidencias">
+    <a href="index.html#evidencias"><span>← Volver</span><b>Inicio</b></a>
+    <a href="normalizacion.html"><span>Siguiente →</span><b>Normalización</b></a>
+  </nav>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p>© <span id="anio">2026</span> Elías Gutiérrez · Ingeniería de Sistemas, Universidad El Bosque</p>
+    <p>Bases de Datos 1 · Docente: Ing., Esp., M.Ed. Christian Felipe Duarte</p>
+  </div>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

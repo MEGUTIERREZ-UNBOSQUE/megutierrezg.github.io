@@ -1,0 +1,40 @@
+[
+ {
+  "id": "balance",
+  "titulo": "Saldos de balance por empresa",
+  "nota": "Suma los saldos de activo, pasivo y patrimonio de cada empresa respetando la naturaleza (débito o crédito) de cada cuenta. Solo cuenta asientos contabilizados.",
+  "sql": "SELECT e.razon_social AS empresa,\n       tc.clase,\n       SUM(CASE WHEN tc.naturaleza = 'DEBITO' THEN m.debe - m.haber\n                ELSE m.haber - m.debe END) AS saldo\nFROM movimiento m\nJOIN asiento a          ON a.id_asiento = m.id_asiento\nJOIN plan_cuenta pc     ON pc.id_cuenta = m.id_cuenta\nJOIN tipo_cuenta tc     ON tc.id_tipo_cuenta = pc.id_tipo_cuenta\nJOIN empresa e          ON e.id_empresa = pc.id_empresa\nWHERE a.estado = 'CONTABILIZADO'\n  AND tc.clase IN ('ACTIVO', 'PASIVO', 'PATRIMONIO')\nGROUP BY e.razon_social, tc.clase\nORDER BY e.razon_social, tc.clase;"
+ },
+ {
+  "id": "resultados",
+  "titulo": "Estado de Resultados por empresa",
+  "nota": "Ingresos menos costos y gastos: la utilidad del ejercicio, calculada directamente con SQL.",
+  "sql": "SELECT e.razon_social AS empresa,\n       SUM(CASE WHEN tc.clase = 'INGRESO' THEN m.haber - m.debe ELSE 0 END) AS ingresos,\n       SUM(CASE WHEN tc.clase IN ('COSTO', 'GASTO') THEN m.debe - m.haber ELSE 0 END) AS costos_y_gastos,\n       SUM(CASE WHEN tc.clase = 'INGRESO' THEN m.haber - m.debe\n                WHEN tc.clase IN ('COSTO', 'GASTO') THEN m.haber - m.debe\n                ELSE 0 END) AS utilidad\nFROM movimiento m\nJOIN asiento a      ON a.id_asiento = m.id_asiento\nJOIN plan_cuenta pc ON pc.id_cuenta = m.id_cuenta\nJOIN tipo_cuenta tc ON tc.id_tipo_cuenta = pc.id_tipo_cuenta\nJOIN empresa e      ON e.id_empresa = pc.id_empresa\nJOIN tipo_asiento ta ON ta.id_tipo_asiento = a.id_tipo_asiento\nWHERE a.estado = 'CONTABILIZADO' AND ta.nombre <> 'CIERRE'\nGROUP BY e.razon_social\nORDER BY utilidad DESC;"
+ },
+ {
+  "id": "partida",
+  "titulo": "¿Cuadra la partida doble?",
+  "nota": "Cada asiento debe sumar lo mismo en el debe y en el haber. Si la consulta no devuelve filas, todo cuadra.",
+  "sql": "SELECT a.id_asiento, a.descripcion,\n       SUM(m.debe) AS total_debe, SUM(m.haber) AS total_haber\nFROM asiento a\nJOIN movimiento m ON m.id_asiento = a.id_asiento\nGROUP BY a.id_asiento, a.descripcion\nHAVING SUM(m.debe) <> SUM(m.haber);"
+ },
+ {
+  "id": "arbol",
+  "titulo": "Plan de cuentas como árbol (consulta recursiva)",
+  "nota": "Recorre la relación recursiva cuenta padre → cuenta hija con WITH RECURSIVE.",
+  "sql": "WITH RECURSIVE arbol AS (\n  SELECT id_cuenta, codigo, nombre, nivel, ARRAY[codigo::text] AS ruta\n  FROM plan_cuenta\n  WHERE id_empresa = 1 AND id_cuenta_padre IS NULL\n  UNION ALL\n  SELECT h.id_cuenta, h.codigo, h.nombre, h.nivel, a.ruta || h.codigo::text\n  FROM plan_cuenta h\n  JOIN arbol a ON h.id_cuenta_padre = a.id_cuenta\n)\nSELECT repeat('    ', nivel - 1) || codigo || '  ' || nombre AS cuenta\nFROM arbol\nORDER BY ruta;"
+ },
+ {
+  "id": "check",
+  "titulo": "Intenta romper la base: debe y haber a la vez",
+  "nota": "Un movimiento no puede ir al debe y al haber al mismo tiempo. La base lo rechaza sola con un CHECK.",
+  "sql": "INSERT INTO movimiento (id_asiento, id_cuenta, debe, haber)\nVALUES (1, (SELECT id_cuenta FROM movimiento WHERE id_asiento = 1 LIMIT 1), 1000, 1000);",
+  "error": true
+ },
+ {
+  "id": "traslape",
+  "titulo": "Intenta romper la base: periodos que se cruzan",
+  "nota": "Dos periodos de una misma empresa no pueden solaparse. Lo impide una restricción EXCLUDE con btree_gist.",
+  "sql": "INSERT INTO periodo_contable (id_empresa, fecha_inicio, fecha_fin)\nSELECT id_empresa, fecha_inicio + 1, fecha_fin + 1\nFROM periodo_contable\nWHERE id_periodo = 1;",
+  "error": true
+ }
+]
