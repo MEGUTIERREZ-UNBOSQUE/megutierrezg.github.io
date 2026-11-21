@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Normalización · E-portafolio de Bases de Datos 1 · Elías Gutiérrez</title>
+  <meta name="description" content="Dependencias funcionales, anomalías y normalización de 1FN a 4FN, con un ejercicio interactivo paso a paso.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/estilo.css">
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="contenedor">
+    <a class="marca" href="index.html"><b>Elías Gutiérrez</b><span>Bases de Datos 1</span></a>
+    <button class="boton-menu" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav aria-label="Principal">
+      <ul class="menu" id="menu">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="modelado.html">Modelado</a></li>
+        <li><a href="normalizacion.html" aria-current="page">Normalización</a></li>
+        <li><a href="sql.html">SQL</a></li>
+        <li><a href="proyecto.html">Proyecto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="contenedor portada">
+    <p class="antetitulo"><b>Evidencia 02</b> · Septiembre</p>
+    <h1>Normalización</h1>
+    <p class="entrada">Si el modelado es intuición, la normalización es la prueba formal. Con las dependencias funcionales se puede demostrar que una tabla guarda cada hecho una sola vez, o encontrar exactamente dónde no lo hace.</p>
+  </section>
+
+  <!-- ===================== INTERACTIVO ===================== -->
+  <section class="seccion" aria-labelledby="t-recorre">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <h2 id="t-recorre">Recórrelo tú</h2>
+        <p>El primer ejercicio del taller de repaso: proyectos, empleados y sus horas. Cambia de paso para ver cómo desaparece la redundancia.</p>
+      </div>
+      <div id="recorrido-normalizacion">
+        <div class="pasos" role="group" aria-label="Paso de la normalización"></div>
+        <div class="dos" style="margin-top:28px;gap:40px">
+          <div class="paso-texto"></div>
+          <div class="paso-df">
+            <ul class="df">
+              <li><span class="total">{cod_proyecto, cod_empleado} → hrs_asignadas</span><span>Total</span></li>
+              <li><span class="parcial">cod_proyecto → nom_proyecto</span><span>Parcial · rompe 2FN</span></li>
+              <li><span class="parcial">cod_empleado → nom_empleado, profesion</span><span>Parcial · rompe 2FN</span></li>
+              <li><span class="transitiva">profesion → vlr_hora</span><span>Transitiva · rompe 3FN</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="paso-tablas" style="margin-top:28px" aria-live="polite"></div>
+        <div class="leyenda" style="margin-top:14px">
+          <span><i style="background:#fff4e0;border:1px solid #f0d9a8"></i>Hecho repetido</span>
+          <span><b style="text-decoration:underline">Subrayado</b>: llave primaria</span>
+          <span style="color:var(--azul-osc)">Azul: llave foránea</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CLASE ===================== -->
+  <section class="seccion" aria-labelledby="t-clase">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <h2 id="t-clase">Lo que vimos en clase</h2>
+        <p>Una sola sesión larga, del problema a la quinta forma normal, siempre sobre el mismo ejemplo de pedidos.</p>
+      </div>
+      <div class="tres">
+        <div><h4>El problema</h4><p>Las tres anomalías: no poder insertar un dato sin otro (inserción), tener que cambiar muchas filas para un solo cambio (actualización) y perder información al borrar (eliminación).</p></div>
+        <div><h4>La herramienta</h4><p>La dependencia funcional X → Y: si conozco X, conozco Y. Parciales cuando dependen de una parte de la llave, transitivas cuando pasan por otro atributo.</p></div>
+        <div><h4>El mapa</h4><p>1FN valores atómicos · 2FN sin parciales · 3FN sin transitivas · FNBC todo determinante es clave · 4FN sin listas independientes · 5FN sin dependencias de reunión.</p></div>
+      </div>
+      <p style="margin-top:32px;color:var(--tinta-2);max-width:760px">La advertencia que más me sirvió: el precio de un producto en un pedido <em>no</em> es redundante con el precio del catálogo. Es el precio al que se vendió ese día. Normalizar no es borrar todo lo que se parece; es entender qué hecho representa cada columna.</p>
+    </div>
+  </section>
+
+  <!-- ===================== TALLERES ===================== -->
+  <section class="seccion" aria-label="Talleres de normalización">
+    <div class="contenedor">
+
+      <article class="evidencia" id="taller-tres-casos">
+        <div class="evidencia-meta">
+          <time datetime="2026-09-27">25–27 de septiembre</time>
+          <h3>Taller de normalización · Empresa de ventas</h3>
+          <dl><dt>Tipo</dt><dd>Taller en grupos de 3, con sustentación</dd><dt>Valor</dt><dd>50 puntos</dd><dt>Casos</dt><dd>Hospital, ventas y competencias</dd></dl>
+        </div>
+        <div class="evidencia-cuerpo">
+          <p>Tres esquemas reales sin datos de ejemplo: había que deducir las dependencias del negocio, defender cada una y normalizar hasta que no quedara ninguna anomalía. En la sustentación nos cuestionaban cada paso. Aquí muestro el caso 2: pedidos con cliente, producto y vendedor en una sola tabla.</p>
+          <div class="esquema">
+            <span class="t">PEDIDO_CLIENTE_PRODUCTO</span> (<u>ID_Pedido</u>, Fecha_Pedido, ID_Cliente, Nombre_Cliente, Sector_Cliente, <u>ID_Producto</u>, Nombre_Producto, Precio_Producto, Cantidad_Solicitada, ID_Vendedor, Nombre_Vendedor, Comisión_Vendedor)
+          </div>
+          <div class="pestanas">
+            <div role="tablist" aria-label="Pasos del caso 2">
+              <button role="tab" id="tn-0" aria-controls="pn-0" aria-selected="true">MER</button>
+              <button role="tab" id="tn-1" aria-controls="pn-1">1FN</button>
+              <button role="tab" id="tn-2" aria-controls="pn-2">2FN</button>
+              <button role="tab" id="tn-3" aria-controls="pn-3">3FN</button>
+            </div>
+            <div role="tabpanel" id="pn-0" aria-labelledby="tn-0">
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/norm2-01.webp" data-titulo="Caso 2 · MER en notación de Peter Chen"><img src="assets/img/diagramas/norm2-01.webp" loading="lazy" alt="Modelo entidad-relación del caso de ventas"></button><figcaption><span>El modelo conceptual que sale después de normalizar.</span><span>Clic para ampliar</span></figcaption></figure>
+            </div>
+            <div role="tabpanel" id="pn-1" aria-labelledby="tn-1" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/norm2-02.webp" data-titulo="Caso 2 · Esquema original (1FN)"><img src="assets/img/diagramas/norm2-02.webp" loading="lazy" alt="Esquema original con sus dependencias"></button><figcaption><span>Una sola tabla con dependencias parciales y transitivas.</span><span>Clic para ampliar</span></figcaption></figure>
+            </div>
+            <div role="tabpanel" id="pn-2" aria-labelledby="tn-2" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/norm2-03.webp" data-titulo="Caso 2 · Segunda forma normal"><img src="assets/img/diagramas/norm2-03.webp" loading="lazy" alt="Esquema en segunda forma normal"></button><figcaption><span>Se separan PEDIDO, DETALLE_PEDIDO y PRODUCTO.</span><span>Clic para ampliar</span></figcaption></figure>
+            </div>
+            <div role="tabpanel" id="pn-3" aria-labelledby="tn-3" hidden>
+              <figure class="diagrama"><button data-visor="assets/img/diagramas/norm2-04.webp" data-titulo="Caso 2 · Tercera forma normal"><img src="assets/img/diagramas/norm2-04.webp" loading="lazy" alt="Esquema final en tercera forma normal"></button><figcaption><span>Cinco tablas; cumple también FNBC.</span><span>Clic para ampliar</span></figcaption></figure>
+            </div>
+          </div>
+          <div class="tabla-envoltura">
+            <table class="datos">
+              <thead><tr><th>Paso</th><th>Problema corregido</th><th>Tablas resultantes</th></tr></thead>
+              <tbody>
+                <tr><td>Original · 1FN</td><td>—</td><td>PEDIDO_CLIENTE_PRODUCTO</td></tr>
+                <tr><td>Paso 1</td><td>Parcial: ID_Producto → Nombre, Precio</td><td>PRODUCTO, PEDIDO_PRODUCTO</td></tr>
+                <tr><td>Paso 2 · 2FN</td><td>Parcial: ID_Pedido → Fecha, Cliente, Vendedor</td><td>PEDIDO, DETALLE_PEDIDO, PRODUCTO</td></tr>
+                <tr><td>Paso 3 · 3FN = FNBC</td><td>Transitivas vía ID_Cliente e ID_Vendedor</td><td>CLIENTE, VENDEDOR, PEDIDO, DETALLE_PEDIDO, PRODUCTO</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>A la pregunta de si cambiar el nombre de un producto es un problema real o solo técnico: es real. Si el producto aparece en 300 pedidos hay que actualizar 300 filas, y si la actualización falla a mitad de camino, el mismo producto queda con dos nombres y los reportes de ventas dejan de cuadrar.</p>
+          <ul class="archivos">
+            <li><a href="documentos/originales/Normalizacion_Caso2_Ventas.xlsx" download><span>Análisis de dependencias y tablas por paso</span><span>XLSX</span></a></li>
+            <li><a href="documentos/originales/Normalizacion_Caso2_Ventas.drawio" download><span>Diagramas de cada forma normal</span><span>DRAWIO</span></a></li>
+          </ul>
+          <div class="aprendi"><span class="etiqueta">Lo que aprendí</span>
+            <p>A preguntar antes de afirmar una dependencia. ¿Una especialidad siempre está en la misma ala del hospital? Depende del hospital. Una dependencia funcional es una regla del negocio, no algo que se adivina mirando los datos.</p></div>
+        </div>
+      </article>
+
+      <article class="evidencia" id="repaso">
+        <div class="evidencia-meta">
+          <time datetime="2026-09-21">21–22 de septiembre</time>
+          <h3>Ejercicios de repaso · Cinco tablas, cinco problemas</h3>
+          <dl><dt>Tipo</dt><dd>Taller de repaso</dd><dt>Formas normales</dt><dd>1FN, 3FN, FNBC y 4FN</dd></dl>
+        </div>
+        <div class="evidencia-cuerpo">
+          <p>Cada ejercicio tenía una trampa distinta. Además del que puedes recorrer arriba, estos fueron los otros cuatro:</p>
+
+          <h4>Estudiantes · no estaba ni en 1FN</h4>
+          <p><code>Courses</code> guardaba «NN204, SI204, IT221» y <code>GradePoints</code> «2,3,3»: listas dentro de una celda. Se separan en una fila por curso, y la nota queda unida a su curso.</p>
+          <div class="esquema"><div><span class="t">ESTUDIANTE</span> (<u>Cod</u>, Name, Email)</div><div><span class="t">INSCRIPCION</span> (<u><i>Cod</i></u>, <u>Course</u>, Grade_Point)</div></div>
+
+          <h4>Cenas de socios · llegar a 4FN</h4>
+          <p>El menú de una cena y la lista de asistentes son dos listas independientes. Mezcladas en la misma tabla, cada plato se repite por cada asistente. Se separan en dos tablas de relación.</p>
+          <div class="esquema"><div><span class="t">MEMBER</span> (<u>member_num</u>, member_name, member_address) · <span class="t">VENUE</span> (<u>venue_code</u>, venue_description)</div><div><span class="t">DINNER</span> (<u>dinner_num</u>, dinner_date, <i>venue_code</i>) · <span class="t">FOOD</span> (<u>food_code</u>, food_description)</div><div><span class="t">DINNER_MENU</span> (<u><i>dinner_num</i></u>, <u><i>food_code</i></u>) · <span class="t">DINNER_ATTENDANCE</span> (<u><i>member_num</i></u>, <u><i>dinner_num</i></u>)</div></div>
+
+          <h4>Visitas médicas · un diagnóstico por profesional</h4>
+          <p>La edad y la ciudad son del paciente, la especialidad es del profesional y el diagnóstico es de la pareja visita–profesional.</p>
+          <div class="esquema"><div><span class="t">PACIENTE</span> (<u>pac_no</u>, pac_edad, pac_ciudad) · <span class="t">PROVEEDOR</span> (<u>prov_no</u>, prov_especialidad)</div><div><span class="t">VISITA</span> (<u>visita_no</u>, dia_visita, <i>pac_no</i>) · <span class="t">DIAGNOSTICO</span> (<u><i>visita_no</i></u>, <u><i>prov_no</i></u>, diagnostico)</div></div>
+
+          <h4>Alquiler de películas · FNBC</h4>
+          <p>El precio no depende de la película sino de su categoría (Old o New). Separarla evita que dos películas «Old» terminen con precios distintos.</p>
+          <div class="esquema"><div><span class="t">CATEGORIA</span> (<u>movie_category</u>, price) · <span class="t">PELICULA</span> (<u>title</u>, director, <i>movie_category</i>)</div><div><span class="t">ALQUILER</span> (<u>rental_id</u>, customer_id, mailed_out_date) · <span class="t">DETALLE_ALQUILER</span> (<u><i>rental_id</i></u>, <u><i>title</i></u>)</div></div>
+
+          <ul class="archivos">
+            <li><a href="documentos/originales/Taller_Normalizacion_5_ejercicios.xlsx" download><span>Los cinco ejercicios con sus tablas y la reflexión final</span><span>XLSX</span></a></li>
+          </ul>
+          <div class="aprendi"><span class="etiqueta">Lo que aprendí</span>
+            <p>El cierre del taller pedía una reflexión, y la mía fue esta: el diagrama E-R propone el diseño de arriba hacia abajo y la normalización lo audita de abajo hacia arriba. Un buen MER nace casi en 3FN, y la normalización es el control de calidad que lo demuestra.</p></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <nav class="contenedor siguiente" aria-label="Navegación entre evidencias">
+    <a href="modelado.html"><span>← Anterior</span><b>Modelado</b></a>
+    <a href="sql.html"><span>Siguiente →</span><b>SQL</b></a>
+  </nav>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p>© <span id="anio">2026</span> Elías Gutiérrez · Ingeniería de Sistemas, Universidad El Bosque</p>
+    <p>Bases de Datos 1 · Docente: Ing., Esp., M.Ed. Christian Felipe Duarte</p>
+  </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/normalizacion.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL · E-portafolio de Bases de Datos 1 · Elías Gutiérrez</title>
+  <meta name="description" content="Las nueve clases de SQL, scripts de práctica sobre el esquema HR y un laboratorio con PostgreSQL real en el navegador con la base del proyecto final.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/estilo.css">
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="contenedor">
+    <a class="marca" href="index.html"><b>Elías Gutiérrez</b><span>Bases de Datos 1</span></a>
+    <button class="boton-menu" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav aria-label="Principal">
+      <ul class="menu" id="menu">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="modelado.html">Modelado</a></li>
+        <li><a href="normalizacion.html">Normalización</a></li>
+        <li><a href="sql.html" aria-current="page">SQL</a></li>
+        <li><a href="proyecto.html">Proyecto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="contenedor portada">
+    <p class="antetitulo"><b>Evidencia 03</b> · Octubre y noviembre</p>
+    <h1>SQL</h1>
+    <p class="entrada">Después de diseñar, preguntar. Nueve clases para aprender a hablarle a una base de datos, y un laboratorio donde puedes hacerle preguntas a la base de mi proyecto final sin instalar nada.</p>
+  </section>
+
+  <!-- ===================== LABORATORIO ===================== -->
+  <section id="laboratorio" class="seccion" aria-labelledby="t-lab">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <h2 id="t-lab">Laboratorio: la base del proyecto, en tu navegador</h2>
+        <p>Esto es PostgreSQL de verdad, compilado a WebAssembly, con las 12 tablas y los datos de prueba del sistema contable. Elige una consulta o escribe la tuya. Nada sale de tu equipo, y si rompes algo, «Reiniciar» la deja como nueva.</p>
+      </div>
+
+      <div class="lab" id="lab">
+        <aside class="lab-lateral" aria-label="Consultas disponibles">
+          <div class="busqueda">
+            <label class="sr" for="lab-buscar">Buscar consulta</label>
+            <input type="search" id="lab-buscar" placeholder="Buscar: saldo, periodo, π, ÷…" autocomplete="off">
+          </div>
+          <ul class="lab-lista"></ul>
+          <div class="lab-grupo" id="lab-tablas-titulo" hidden>Tablas · filas</div>
+          <ul class="lab-tablas" id="lab-tablas"></ul>
+        </aside>
+        <div class="lab-principal">
+          <div class="lab-barra">
+            <div class="lab-estado" role="status"><span class="punto"></span><span>Apagado. Se enciende al ejecutar la primera consulta.</span></div>
+            <div style="display:flex;gap:8px">
+              <button type="button" class="boton boton-sec" id="lab-encender">Encender PostgreSQL</button>
+              <button type="button" class="boton boton-sec" id="lab-reiniciar" hidden>Reiniciar</button>
+            </div>
+          </div>
+          <div class="lab-detalle"></div>
+          <div class="lab-editor">
+            <label class="sr" for="lab-sql">Consulta SQL</label>
+            <textarea id="lab-sql" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+          </div>
+          <div class="lab-acciones">
+            <button type="button" class="boton boton-primario" id="lab-ejecutar">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>Ejecutar</button>
+            <span class="peq"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> también ejecuta</span>
+          </div>
+          <div class="lab-resultado" aria-live="polite"></div>
+        </div>
+      </div>
+      <p class="peq gris" style="margin-top:14px">Los scripts que se cargan son los mismos del repositorio del proyecto: <a href="assets/sql/01_ddl_tablas.sql">01_ddl_tablas.sql</a> y <a href="assets/sql/02_seed_datos_realistas.sql">02_seed_datos_realistas.sql</a>. Las 51 consultas de álgebra relacional se comprueban contra el número de filas que dice nuestro documento.</p>
+    </div>
+  </section>
+
+  <!-- ===================== CLASES ===================== -->
+  <section id="clases" class="seccion" aria-labelledby="t-clases">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <h2 id="t-clases">Las nueve clases de SQL</h2>
+        <p>Trabajamos sobre el esquema HR de Oracle (empleados, departamentos, cargos, ubicaciones y países), con un mapa de ruta de todo SQL como guía.</p>
+      </div>
+      <ol class="clases">
+        <li><time>C1</time><div><h4>Introducción</h4><p>El lenguaje y sus sublenguajes (DDL, DML, DCL, TCL), el esquema HR y el entorno de trabajo.</p></div></li>
+        <li><time>C2</time><div><h4>Recuperar datos con SELECT</h4><p>Columnas, alias, expresiones aritméticas, concatenación y <code>DISTINCT</code>.</p></div></li>
+        <li><time>C3</time><div><h4>Restringir y ordenar</h4><p><code>WHERE</code>, comparaciones, <code>BETWEEN</code>, <code>IN</code>, <code>LIKE</code>, <code>IS NULL</code>, precedencia de operadores, <code>ORDER BY</code> y <code>FETCH FIRST</code>.</p></div></li>
+        <li><time>C4</time><div><h4>Funciones de una fila</h4><p>Texto (<code>UPPER</code>, <code>SUBSTR</code>, <code>LENGTH</code>), números (<code>ROUND</code>, <code>TRUNC</code>, <code>MOD</code>) y fechas (<code>MONTHS_BETWEEN</code>, <code>ADD_MONTHS</code>).</p></div></li>
+        <li><time>C5</time><div><h4>Funciones de conversión</h4><p><code>TO_CHAR</code>, <code>TO_NUMBER</code>, <code>TO_DATE</code>, <code>NVL</code>, <code>NULLIF</code>, <code>COALESCE</code> y expresiones <code>CASE</code>.</p></div></li>
+        <li><time>C6</time><div><h4>Funciones de grupo</h4><p><code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>, <code>GROUP BY</code> y la diferencia entre <code>WHERE</code> y <code>HAVING</code>.</p></div></li>
+        <li><time>C7</time><div><h4>Joins</h4><p>Natural, <code>USING</code>, <code>ON</code>, self join, non-equijoin, <code>LEFT</code>, <code>RIGHT</code>, <code>FULL</code> y <code>CROSS</code>.</p></div></li>
+        <li><time>C8</time><div><h4>Subconsultas</h4><p>De una fila y de varias filas, <code>IN</code>, <code>ANY</code>, <code>ALL</code>, correlacionadas y <code>EXISTS</code>.</p></div></li>
+        <li><time>C9</time><div><h4>Operadores de conjunto</h4><p><code>UNION</code>, <code>UNION ALL</code>, <code>INTERSECT</code> y <code>MINUS</code>, y cómo emparejar columnas entre consultas.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== PRÁCTICA ===================== -->
+  <section id="practica" class="seccion" aria-labelledby="t-practica">
+    <div class="contenedor">
+      <article class="evidencia">
+        <div class="evidencia-meta">
+          <time datetime="2026-10">Octubre</time>
+          <h3 id="t-practica">Mis scripts de práctica</h3>
+          <dl><dt>Esquema</dt><dd>HR de Oracle</dd><dt>Archivos</dt><dd>10 scripts, del SELECT a las funciones analíticas</dd><dt>Repositorio</dt><dd><a href="https://github.com/eliasgdev/scripts-sql">eliasgdev/scripts-sql</a></dd></dl>
+        </div>
+        <div class="evidencia-cuerpo">
+          <p>Después de cada clase escribía las consultas por mi cuenta para fijarlas. Empecé con <code>SELECT</code> y <code>WHERE</code> y terminé con rankings por departamento, <code>WITH</code> y consultas jerárquicas con <code>CONNECT BY</code>, que fueron más allá de lo que vimos en clase.</p>
+          <div class="pestanas" id="scripts">
+            <div role="tablist" aria-label="Scripts de práctica">
+              <button role="tab" id="ts-1" aria-controls="ps" aria-selected="true" data-archivo="01_select_where.sql">01 SELECT</button>
+              <button role="tab" id="ts-2" aria-controls="ps" data-archivo="02_order_fetch.sql">02 ORDER</button>
+              <button role="tab" id="ts-3" aria-controls="ps" data-archivo="03_funciones.sql">03 Funciones</button>
+              <button role="tab" id="ts-4" aria-controls="ps" data-archivo="04_group_having.sql">04 Grupos</button>
+              <button role="tab" id="ts-5" aria-controls="ps" data-archivo="05_joins.sql">05 Joins</button>
+              <button role="tab" id="ts-6" aria-controls="ps" data-archivo="06_subconsultas.sql">06 Subconsultas</button>
+              <button role="tab" id="ts-7" aria-controls="ps" data-archivo="07_joins_avanzados.sql">07 Joins+</button>
+              <button role="tab" id="ts-8" aria-controls="ps" data-archivo="08_joins_con_group_by.sql">08 Joins y grupos</button>
+              <button role="tab" id="ts-9" aria-controls="ps" data-archivo="09_subconsultas_avanzadas.sql">09 WITH</button>
+              <button role="tab" id="ts-10" aria-controls="ps" data-archivo="10_analiticas_jerarquicas.sql">10 Analíticas</button>
+            </div>
+            <div role="tabpanel" id="ps" aria-live="polite">
+              <pre class="sql" style="max-height:520px"><code>Cargando…</code></pre>
+            </div>
+          </div>
+          <div class="aprendi"><span class="etiqueta">Lo que aprendí</span>
+            <p>Que SQL se lee al revés de como se escribe: primero <code>FROM</code> y los joins, luego <code>WHERE</code>, <code>GROUP BY</code>, <code>HAVING</code> y al final <code>SELECT</code>. Entender ese orden me explicó por qué un alias del <code>SELECT</code> no sirve en el <code>WHERE</code> y por qué los filtros de grupo van en <code>HAVING</code>.</p></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <nav class="contenedor siguiente" aria-label="Navegación entre evidencias">
+    <a href="normalizacion.html"><span>← Anterior</span><b>Normalización</b></a>
+    <a href="proyecto.html"><span>Siguiente →</span><b>Proyecto final</b></a>
+  </nav>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p>© <span id="anio">2026</span> Elías Gutiérrez · Ingeniería de Sistemas, Universidad El Bosque</p>
+    <p>Bases de Datos 1 · Docente: Ing., Esp., M.Ed. Christian Felipe Duarte</p>
+  </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script>
+  // Visor de scripts de práctica
+  (() => {
+    const panel = document.querySelector("#ps code");
+    const cargar = async (archivo) => {
+      panel.textContent = "Cargando…";
+      try {
+        const txt = await fetch("assets/sql/practica/" + archivo).then((r) => { if (!r.ok) throw 0; return r.text(); });
+        panel.innerHTML = resaltarSQL(txt.trimEnd());
+      } catch { panel.textContent = "No se pudo cargar el archivo."; }
+    };
+    document.querySelectorAll("#scripts [role=tab]").forEach((t) => {
+      t.addEventListener("click", () => cargar(t.dataset.archivo));
+      t.addEventListener("keyup", (e) => { if (e.key.startsWith("Arrow")) cargar(document.activeElement.dataset.archivo); });
+    });
+    cargar("01_select_where.sql");
+  })();
+</script>
+<script type="module" src="assets/js/laboratorio.js"></script>
+</body>
+</html>
